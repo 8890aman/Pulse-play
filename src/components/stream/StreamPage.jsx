@@ -846,6 +846,31 @@ const StreamPage = () => {
     }
   };
 
+  // Add a useEffect hook to handle scroll locking on mobile
+  useEffect(() => {
+    if (isMobileDevice && isChatOpen) {
+      // Prevent scrolling on the body when mobile chat is open
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    } else {
+      // Restore scrolling when chat is closed or on desktop
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    }
+
+    // Cleanup function to restore scrolling when component unmounts
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+  }, [isMobileDevice, isChatOpen]);
+
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
       <div className="max-w-7xl mx-auto px-0">
@@ -1178,8 +1203,14 @@ const StreamPage = () => {
             {/* --- Start Moved Mobile Chat Block --- */}
             {isChatOpen && (
               <div className="xl:hidden">
-                <Card className="bg-[#2A2A2D]/50 border-none shadow-xl">
-                  <div className="flex flex-col min-h-[40vh] max-h-[60vh]">
+                <Card 
+                  className="bg-[#1A1A1D] border-none shadow-xl fixed z-50 bottom-0 left-0 right-0 rounded-none rounded-t-xl overflow-hidden"
+                  style={{ 
+                    maxHeight: '70vh', // Reduced from 90vh
+                    touchAction: isMobileDevice ? 'none' : 'auto'
+                  }}
+                >
+                  <div className="flex flex-col min-h-[45vh] max-h-[65vh]"> {/* Adjusted from min-h-[50vh] max-h-[75vh] */}
                     {/* Chat Header with Close Button */}
                     <div className="p-3 border-b border-[#1A1A1D] sticky top-0 bg-[#2A2A2D]/50 backdrop-blur-sm z-10">
                       <div className="flex items-center justify-between mb-2">
