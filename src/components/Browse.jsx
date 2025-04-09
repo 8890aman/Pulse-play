@@ -113,22 +113,39 @@ const Browse = () => {
     )
   })).filter(section => section.categories.length > 0);
 
+  console.log('Search query:', searchQuery);
+  console.log('Filtered categories count:', filteredCategories.length);
+
   return (
     <div className="bg-[#1A1A1D] min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
         {/* Search Bar */}
         <div className="mb-8">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search categories..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search categories..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#2A2A2D] text-[#EBD3F8] rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#EBD3F8]/50"
-                />
+            />
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#EBD3F8]/60 w-5 h-5" />
           </div>
         </div>
+
+        {/* No Results Message - fixed condition */}
+        {(filteredCategories.length === 0 && searchQuery.trim() !== '') && (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-16 h-16 bg-[#2A2A2D] rounded-full flex items-center justify-center mb-4">
+              <Search className="w-8 h-8 text-[#EBD3F8]/50" />
+            </div>
+            <h3 className="text-[#EBD3F8] text-xl font-medium mb-2">No results found</h3>
+            <p className="text-[#EBD3F8]/60 text-center max-w-md">
+              We couldn't find any categories matching "{searchQuery}". 
+              Try different keywords or check out our popular categories.
+            </p>
+          </div>
+        )}
 
         {/* Categories */}
         {filteredCategories.map((section) => (
