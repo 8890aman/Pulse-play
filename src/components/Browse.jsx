@@ -133,9 +133,9 @@ const Browse = () => {
           </div>
         </div>
 
-        {/* No Results Message - fixed condition */}
-        {(filteredCategories.length === 0 && searchQuery.trim() !== '') && (
-          <div className="flex flex-col items-center justify-center py-20">
+        {/* No Results Message */}
+        {filteredCategories.length === 0 && searchQuery.trim() !== '' && (
+          <div className="flex flex-col items-center justify-center py-20 bg-[#2A2A2D]/30 rounded-lg">
             <div className="w-16 h-16 bg-[#2A2A2D] rounded-full flex items-center justify-center mb-4">
               <Search className="w-8 h-8 text-[#EBD3F8]/50" />
             </div>
@@ -144,6 +144,12 @@ const Browse = () => {
               We couldn't find any categories matching "{searchQuery}". 
               Try different keywords or check out our popular categories.
             </p>
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="mt-4 px-4 py-2 bg-[#9D4EDD] text-white rounded-md hover:bg-[#C77DFF] transition-colors"
+            >
+              Clear Search
+            </button>
           </div>
         )}
 
