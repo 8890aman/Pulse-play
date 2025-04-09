@@ -1,0 +1,415 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from "@material-tailwind/react";
+import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle } from 'lucide-react';
+import NotificationModel from '../models/NotificationModel';
+import GiftModel from '../models/GiftModel';
+
+const Navbar = ({ onOpenLogin, onOpenSignup }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [giftModelOpen, setGiftModelOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const mobileMenuRef = useRef(null);
+  const userMenuRef = useRef(null);
+
+  // Detect scroll for navbar style changes
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        const menuButton = document.getElementById('mobile-menu-button');
+        if (!menuButton || !menuButton.contains(event.target)) {
+          setIsMenuOpen(false);
+        }
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
+  // Close user dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        const userButton = document.getElementById('user-menu-button');
+        if (!userButton || !userButton.contains(event.target)) {
+          setUserMenuOpen(false);
+        }
+      }
+    };
+
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [userMenuOpen]);
+
+  return (
+    <>
+      <nav className={`${isScrolled ? 'bg-[#1A1A1D]/90 backdrop-blur-md shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300`}>
+        <div className="h-16 flex items-center justify-between max-w-[2000px] mx-auto px-4 md:px-6">
+          {/* Left section - Logo */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center group">
+              <div className="relative overflow-hidden w-10 h-10 flex items-center justify-center mr-2">
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#9D4EDD] to-[#C77DFF] rounded-full opacity-90 group-hover:opacity-100 transition-opacity duration-300 shadow-lg animate-pulse-slow"></div>
+                
+                {/* 3D lighting and depth effects */}
+                <div className="absolute inset-0.5 bg-gradient-to-bl from-white/20 to-transparent rounded-full"></div>
+                <div className="absolute inset-1 rounded-full bg-gradient-to-tr from-[#9D4EDD]/30 to-[#C77DFF]/20 backdrop-blur-sm"></div>
+                <div className="absolute top-0.5 left-1 w-3 h-3 rounded-full bg-white/20 blur-sm"></div>
+                
+                {/* Orbiting particles */}
+                <div className="absolute inset-0 rotate-orbit">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white/70 blur-[0.5px]"></div>
+                </div>
+                <div className="absolute inset-0 rotate-orbit-reverse">
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-white/70 blur-[0.5px]"></div>
+                </div>
+                <div className="absolute inset-0 rotate-orbit-slow">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#C77DFF]/70 blur-[1px]"></div>
+                </div>
+                
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Pulse waves animation */}
+                  <div className="absolute w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white/30 animate-ping"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/20 animate-ping" style={{animationDelay: '300ms'}}></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/10 animate-ping" style={{animationDelay: '600ms'}}></div>
+                  </div>
+                  
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  
+                  {/* Energy glow behind play button */}
+                  <div className="absolute w-5 h-5 rounded-full bg-white/10 blur-md"></div>
+                  
+                  {/* Play Triangle with glow */}
+                  <div className="flex items-center justify-center w-full h-full z-10">
+                    <div className="relative w-4 h-4.5 ml-0.5">
+                      <div className="absolute inset-0 bg-white clip-path-triangle"></div>
+                      <div className="absolute inset-0 bg-white clip-path-triangle blur-[1px] opacity-70"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col">
+                <span className="text-white text-xl font-bold leading-none tracking-tight group-hover:text-[#EBD3F8] transition-colors">
+                  Pulse<span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-transparent bg-clip-text">Play</span>
+                </span>
+                <span className="text-[9px] text-[#C77DFF]/80 leading-none mt-0.5">LIVE STREAMING</span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Search Input (now more centered/expanded) */}
+          <div className="hidden md:block flex-1 max-w-2xl mx-4 lg:mx-8">
+            <div className="relative group">
+              <input
+                type="text"
+                placeholder="Search streams, creators, or categories"
+                className="w-full bg-[#2A2A2D]/50 text-[#EBD3F8] border-none focus:ring-2 focus:ring-[#C77DFF]/30 placeholder-[#EBD3F8]/60 rounded-xl pr-12 pl-4 py-2 transition-all duration-200 outline-none"
+              />
+              <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#EBD3F8]/50 hover:text-[#C77DFF] transition-colors">
+                <Search className="w-5 h-5" />
+              </button>
+              
+              {/* Search Hotkey Hint */}
+              <div className="absolute right-12 top-1/2 -translate-y-1/2 hidden md:flex items-center">
+                <kbd className="hidden lg:flex items-center justify-center h-5 w-5 rounded border border-[#EBD3F8]/20 bg-[#2A2A2D] font-mono text-xs text-[#EBD3F8]/70 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  /
+                </kbd>
+              </div>
+            </div>
+          </div>
+
+          {/* Right section - User actions */}
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {/* Notification Bell */}
+            <button 
+              className="text-[#EBD3F8]/70 hover:text-[#C77DFF] transition-colors hidden sm:flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#2A2A2D]/70 relative group"
+              onClick={() => setNotificationsOpen(true)}
+            >
+              <Bell className="w-5 h-5" />
+              <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C77DFF]/50 opacity-75"></span>
+                <span className="relative inline-flex justify-center items-center rounded-full h-3.5 w-3.5 bg-[#C77DFF] text-[9px] font-bold text-white">3</span>
+              </span>
+            </button>
+            
+            {/* Gift Button */}
+            <button 
+              className="text-[#EBD3F8]/70 hover:text-[#C77DFF] transition-colors hidden sm:flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#2A2A2D]/70"
+              onClick={() => setGiftModelOpen(true)}
+            >
+              <Gift className="w-5 h-5" />
+            </button>
+            
+            {/* Auth Buttons - Shown when user is not logged in */}
+            <div className="hidden sm:flex items-center space-x-2">
+              <Button 
+                variant="text" 
+                className="text-[#EBD3F8] hover:text-[#C77DFF] normal-case flex items-center px-3 py-1.5 text-sm"
+                onClick={onOpenLogin}
+              >
+                <LogIn className="w-3.5 h-3.5 mr-1.5" />
+                Log In
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-[#9D4EDD] to-[#C77DFF] text-white hover:shadow-lg hover:shadow-[#C77DFF]/20 normal-case flex items-center px-3.5 py-1.5 text-sm transition-all duration-300"
+                onClick={onOpenSignup}
+              >
+                <UserPlus className="w-3.5 h-3.5 mr-1.5" />
+                Sign Up
+              </Button>
+            </div>
+            
+            {/* Mobile menu button */}
+            <button 
+              id="mobile-menu-button"
+              className="md:hidden flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#2A2A2D]/70 text-[#EBD3F8] hover:text-[#C77DFF] transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            
+            {/* User profile button */}
+            <button 
+              id="user-menu-button"
+              className="text-[#EBD3F8] hover:text-[#C77DFF] relative group"
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] p-0.5 flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#1A1A1D] flex items-center justify-center group-hover:bg-[#2A2A2D] transition-colors">
+                  <User className="h-4 w-4" />
+                </div>
+              </div>
+            </button>
+            
+            {/* User Profile Dropdown */}
+            {userMenuOpen && (
+              <div 
+                ref={userMenuRef}
+                className="absolute top-16 right-4 w-64 bg-[#1A1A1D] border border-[#2A2A2D] rounded-xl shadow-xl p-3 z-50"
+              >
+                <div className="border-b border-[#2A2A2D] pb-2 mb-2">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] p-0.5 flex-shrink-0">
+                      <div className="w-full h-full rounded-full bg-[#1A1A1D] flex items-center justify-center">
+                        <User className="h-5 w-5 text-[#C77DFF]" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#EBD3F8] font-medium truncate">Guest User</div>
+                      <div className="text-[#EBD3F8]/60 text-xs">Not signed in</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-1 mb-2">
+                  <Link to="" className="flex items-center space-x-3 px-3 py-2 rounded-lg text-[#EBD3F8]/80 hover:bg-[#2A2A2D] hover:text-[#EBD3F8] transition-colors">
+                    <Settings className="h-4 w-4" />
+                    <span className="text-sm">Settings</span>
+                  </Link>
+                  <Link to="" className="flex items-center space-x-3 px-3 py-2 rounded-lg text-[#EBD3F8]/80 hover:bg-[#2A2A2D] hover:text-[#EBD3F8] transition-colors">
+                    <HelpCircle className="h-4 w-4" />
+                    <span className="text-sm">Help & Support</span>
+                  </Link>
+                </div>
+                
+                <div className="border-t border-[#2A2A2D] pt-2 space-y-2">
+                  <Button 
+                    variant="text" 
+                    className="w-full text-[#EBD3F8] hover:text-[#C77DFF] normal-case flex items-center justify-center px-3 py-1.5 text-sm"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      onOpenLogin();
+                    }}
+                  >
+                    <LogIn className="w-3.5 h-3.5 mr-1.5" />
+                    Log In
+                  </Button>
+                  <Button 
+                    className="w-full bg-gradient-to-r from-[#9D4EDD] to-[#C77DFF] text-white hover:shadow-lg hover:shadow-[#C77DFF]/20 normal-case flex items-center justify-center px-3 py-1.5 text-sm transition-all duration-300"
+                    onClick={() => {
+                      setUserMenuOpen(false);
+                      onOpenSignup();
+                    }}
+                  >
+                    <UserPlus className="w-3.5 h-3.5 mr-1.5" />
+                    Sign Up
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div 
+            ref={mobileMenuRef}
+            className="md:hidden bg-[#1A1A1D] border-t border-[#2A2A2D]/50 absolute w-full z-40 shadow-xl"
+          >
+            <div className="px-4 py-3 space-y-3">
+              {/* Search bar */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search streams, creators, or categories"
+                  className="w-full bg-[#2A2A2D]/50 text-[#EBD3F8] border-none focus:ring-2 focus:ring-[#C77DFF]/30 placeholder-[#EBD3F8]/60 rounded-xl pr-12 pl-4 py-2 outline-none"
+                />
+                <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#EBD3F8]/50 hover:text-[#C77DFF] transition-colors">
+                  <Search className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="py-3 flex items-center space-x-4 border-t border-[#2A2A2D]/50">
+                <button 
+                  className="flex-1 flex items-center justify-center space-x-2 py-2.5 text-[#EBD3F8]/80 hover:text-[#C77DFF] transition-colors"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setNotificationsOpen(true);
+                  }}
+                >
+                  <Bell className="w-5 h-5" />
+                  <span>Notifications</span>
+                  <div className="flex h-5 w-5 items-center justify-center bg-[#C77DFF] text-white text-xs rounded-full">3</div>
+                </button>
+                
+                <button 
+                  className="flex-1 flex items-center justify-center space-x-2 py-2.5 text-[#EBD3F8]/80 hover:text-[#C77DFF] transition-colors"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setGiftModelOpen(true);
+                  }}
+                >
+                  <Gift className="w-5 h-5" />
+                  <span>Buy Gifts</span>
+                </button>
+              </div>
+
+              {/* Login/Signup Buttons */}
+              <div className="pt-3 flex space-x-2 border-t border-[#2A2A2D]/50">
+                <Button 
+                  variant="text" 
+                  className="text-[#EBD3F8] hover:text-[#C77DFF] normal-case flex-1 flex items-center justify-center"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onOpenLogin();
+                  }}
+                >
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Log In
+                </Button>
+                <Button 
+                  className="bg-gradient-to-r from-[#9D4EDD] to-[#C77DFF] text-white hover:shadow-lg hover:shadow-[#C77DFF]/20 normal-case flex-1 flex items-center justify-center"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onOpenSignup();
+                  }}
+                >
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Sign Up
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Notification Modal */}
+      <NotificationModel 
+        isOpen={notificationsOpen} 
+        onClose={() => setNotificationsOpen(false)} 
+      />
+
+      {/* Gift Modal */}
+      <GiftModel 
+        isOpen={giftModelOpen} 
+        onClose={() => setGiftModelOpen(false)} 
+      />
+      
+      {/* Add CSS for triangle clip path in the logo */}
+      <style jsx="true">{`
+        .clip-path-triangle {
+          clip-path: polygon(0% 0%, 0% 100%, 100% 50%);
+        }
+        
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 0.9;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+        }
+        
+        .animate-pulse-slow {
+          animation: pulse-slow 3s ease-in-out infinite;
+        }
+        
+        @keyframes rotate-orbit {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        
+        @keyframes rotate-orbit-reverse {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
+          }
+        }
+        
+        .rotate-orbit {
+          animation: rotate-orbit 6s linear infinite;
+        }
+        
+        .rotate-orbit-reverse {
+          animation: rotate-orbit-reverse 8s linear infinite;
+        }
+        
+        .rotate-orbit-slow {
+          animation: rotate-orbit 12s linear infinite;
+        }
+      `}</style>
+    </>
+  );
+};
+
+export default Navbar; 
