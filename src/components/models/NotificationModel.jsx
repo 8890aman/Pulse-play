@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Button } from "@material-tailwind/react";
 import { X, Bell, Check, Clock, Users, Heart, Gift, MessageCircle } from 'lucide-react';
-import { useGlobalContext } from '../../context/GlobalContext';
 
 const NotificationModel = ({ isOpen, onClose }) => {
-  const { setIsModalOpen } = useGlobalContext();
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -58,11 +56,6 @@ const NotificationModel = ({ isOpen, onClose }) => {
     }
   ]);
 
-  // Update global modal state when this modal opens or closes
-  useEffect(() => {
-    setIsModalOpen(isOpen);
-  }, [isOpen, setIsModalOpen]);
-
   const markAllAsRead = () => {
     setNotifications(prev => prev.map(notification => ({
       ...notification,
@@ -81,10 +74,10 @@ const NotificationModel = ({ isOpen, onClose }) => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4">
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-16 sm:pt-24 px-4">
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose}></div>
       
-      <Card className="bg-[#1A1A1D] border border-[#2A2A2D] shadow-xl w-full max-w-md mx-auto z-10 overflow-hidden">
+      <Card className="bg-[#1A1A1D] border border-[#2A2A2D] shadow-xl w-full max-w-md mx-auto z-[9999] overflow-hidden">
         <div className="p-4 border-b border-[#2A2A2D] flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Bell className="h-5 w-5 text-[#EBD3F8]" />
