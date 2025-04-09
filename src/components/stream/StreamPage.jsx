@@ -78,27 +78,27 @@ const StreamPage = () => {
   const [gifs] = useState([
     {
       id: 'pogchamp',
-      url: 'https://media.tenor.com/ex4eO3mhTPIAAAAC/pogchamp-twitch.gif',
+      url: 'https://media.giphy.com/media/e37RbTLYjfc1q/giphy.gif?cid=790b7611xaxg6rjah6a3h31akou9pce0lyxjzz2gurrpf8t4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'PogChamp'
     },
     {
       id: 'kappa',
-      url: 'https://media.tenor.com/YnuJEMXgqK4AAAAC/kappa-twitch-emote.gif',
+      url: 'https://media.giphy.com/media/e37RbTLYjfc1q/giphy.gif?cid=790b7611xaxg6rjah6a3h31akou9pce0lyxjzz2gurrpf8t4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'Kappa'
     },
     {
       id: 'lul',
-      url: 'https://media.tenor.com/T7MPUEwI4dEAAAAC/lul-twitch.gif',
+      url: 'https://media.giphy.com/media/e37RbTLYjfc1q/giphy.gif?cid=790b7611xaxg6rjah6a3h31akou9pce0lyxjzz2gurrpf8t4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'LUL'
     },
     {
       id: 'pog',
-      url: 'https://media.tenor.com/1UE5dMyW3_MAAAAC/pog-poggers.gif',
+      url: 'https://media.giphy.com/media/e37RbTLYjfc1q/giphy.gif?cid=790b7611xaxg6rjah6a3h31akou9pce0lyxjzz2gurrpf8t4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'POG'
     },
     {
       id: 'catjam',
-      url: 'https://media.tenor.com/3U4GPFpSeyQAAAAC/cat-jam-cat.gif',
+      url: 'https://media.giphy.com/media/e37RbTLYjfc1q/giphy.gif?cid=790b7611xaxg6rjah6a3h31akou9pce0lyxjzz2gurrpf8t4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'CatJam'
     }
   ]);
@@ -106,22 +106,22 @@ const StreamPage = () => {
   const [stickers] = useState([
     {
       id: 'pepe',
-      url: 'https://media.tenor.com/QV-CJ1HnpB0AAAAd/pepe-the-frog-happy-pepe.gif',
+      url: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWJ6djdja3ZxajJxZThiYXUyN3drMXE3YXB1M2lrbXV5YmJ0M2w3cyZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/CKqTAwtMSLl0lz4cUM/giphy.gif',
       title: 'Happy Pepe'
     },
     {
       id: 'peepohappy',
-      url: 'https://media.tenor.com/FXLB8U7UYCkAAAAd/peepo-happy-peepo.gif',
+      url: 'https://media.giphy.com/media/VIKa3CjZDCoymNcBY5/giphy.gif?cid=790b76111bzv7ckvqj2qe8bau27wk1q7apu3ikmuybbt3l7s&ep=v1_gifs_trending&rid=giphy.gif&ct=g',
       title: 'PeepoHappy'
     },
     {
       id: 'peeposad',
-      url: 'https://media.tenor.com/pMNUOYUbhWAAAAAd/peepo-sad-peepo.gif',
+      url: 'https://media.giphy.com/media/C3brYLms1bhv2/giphy.gif?cid=790b76114ddnebxmrq8htte24b3se4d21c46iswr0tcnfs0u&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'PeepoSad'
     },
     {
       id: 'peepoclap',
-      url: 'https://media.tenor.com/7HVbzOEbR-EAAAAd/peepo-clap.gif',
+      url: 'https://media.giphy.com/media/C3brYLms1bhv2/giphy.gif?cid=790b76114ddnebxmrq8htte24b3se4d21c46iswr0tcnfs0u&ep=v1_gifs_search&rid=giphy.gif&ct=g',
       title: 'PeepoClap'
     }
   ]);
