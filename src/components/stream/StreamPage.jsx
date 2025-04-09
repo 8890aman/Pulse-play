@@ -1597,14 +1597,7 @@ const StreamPage = () => {
                             </button>
                             
                             {/* GIF Button */}
-                            <button 
-                              type="button"
-                              onClick={() => setShowGifPicker(!showGifPicker)}
-                              className="text-[#EBD3F8]/70 hover:text-[#EBD3F8] transition-colors p-1.5 rounded-md bg-[#2A2A2D]"
-                              aria-label="GIFs"
-                            >
-                              <Gift className="h-4 w-4" />
-                            </button>
+                           
 
                             {/* Send Button */}
                             <button 
