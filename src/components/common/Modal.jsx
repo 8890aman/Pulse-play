@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-[2000]">
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, children, title }) => {
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-10 overflow-y-auto">
+      <div className="fixed inset-0 z-[2001] overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4">
           {/* Modal Content */}
           <div 

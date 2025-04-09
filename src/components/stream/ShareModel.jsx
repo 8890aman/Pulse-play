@@ -110,10 +110,9 @@ const ShareModel = ({ open, onClose, streamData }) => {
   }
 
   return (
-    <div 
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+    <div
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
       onClick={() => onClose()}
-      style={{ animation: 'fadeIn 0.2s ease-out' }}
     >
       {/* Hidden audio element for share sound */}
       <audio 
@@ -124,11 +123,8 @@ const ShareModel = ({ open, onClose, streamData }) => {
         onError={(e) => console.error("Error loading audio:", e)}
       />
       
-      <Card 
-        className="w-full max-w-md bg-[#2A2A2D] text-[#EBD3F8] p-0 shadow-2xl"
-        onClick={(e) => e.stopPropagation()} 
-        style={{ animation: 'slideIn 0.3s ease-out' }}
-      >
+      <div className="relative bg-[#1A1A1D] rounded-xl w-full max-w-md shadow-xl border border-[#2A2A2D] z-[2001]"
+        onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#1A1A1D]">
           <Typography variant="h5" className="text-[#EBD3F8] font-bold">Share Stream</Typography>
@@ -314,7 +310,7 @@ const ShareModel = ({ open, onClose, streamData }) => {
             </Button>
           </div>
         </div>
-      </Card>
+      </div>
       <style jsx global>{`
         @keyframes fadeIn {
           from { opacity: 0; }

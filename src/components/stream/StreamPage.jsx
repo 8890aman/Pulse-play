@@ -1202,17 +1202,17 @@ const StreamPage = () => {
 
             {/* --- Start Moved Mobile Chat Block --- */}
             {isChatOpen && (
-              <div className="xl:hidden">
+              <div className="xl:hidden" style={{ position: 'relative', zIndex: 55 }}>
                 <Card 
-                  className="bg-[#1A1A1D] border-none shadow-xl fixed z-50 bottom-0 left-0 right-0 rounded-none rounded-t-xl overflow-hidden"
+                  className="bg-[#1A1A1D] border-none shadow-xl fixed z-[55] bottom-0 left-0 right-0 rounded-none rounded-t-xl overflow-hidden"
                   style={{ 
-                    maxHeight: '70vh', // Reduced from 90vh
+                    maxHeight: '70vh',
                     touchAction: isMobileDevice ? 'none' : 'auto'
                   }}
                 >
-                  <div className="flex flex-col min-h-[45vh] max-h-[65vh]"> {/* Adjusted from min-h-[50vh] max-h-[75vh] */}
+                  <div className="flex flex-col min-h-[40vh] max-h-[60vh]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
                     {/* Chat Header with Close Button */}
-                    <div className="p-3 border-b border-[#1A1A1D] sticky top-0 bg-[#2A2A2D]/50 backdrop-blur-sm z-10">
+                    <div className="p-3 border-b border-[#1A1A1D] sticky top-0 bg-[#2A2A2D]/50 backdrop-blur-sm z-[5]">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center">
                           <MessageCircle className="h-5 w-5 text-[#EBD3F8] mr-2" />
@@ -1300,7 +1300,7 @@ const StreamPage = () => {
                       ))}
                     </div>
                     {/* Chat Input */}
-                    <div className="p-2 border-t border-[#1A1A1D] sticky bottom-0 bg-[#2A2A2D]/90 backdrop-blur-sm z-20">
+                    <div className="p-2 border-t border-[#1A1A1D] sticky bottom-0 bg-[#2A2A2D]/90 backdrop-blur-sm z-[15]">
                       <form onSubmit={handleSendMessage} className="relative">
                         <div className="relative">
                         <input
@@ -1775,7 +1775,7 @@ const StreamPage = () => {
                     ))}
                   </div>
                     {/* Chat Input */}
-                  <div className="p-3 border-t border-[#1A1A1D] bg-[#2A2A2D]/90 backdrop-blur-sm z-20 relative">
+                  <div className="p-3 border-t border-[#1A1A1D] bg-[#2A2A2D]/90 backdrop-blur-sm z-[15] relative">
                     <form onSubmit={handleSendMessage} className="relative">
                       <div className="relative">
                         <input

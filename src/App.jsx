@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Navbar from './components/layout/Navbar'
 import Sidebar from './components/layout/Sidebar'
 import StreamPage from './components/stream/StreamPage'
@@ -10,17 +10,10 @@ import Trending from './components/Trending'
 import Events from './components/Events'
 import LoginModal from './components/auth/LoginModal'
 import SignupModal from './components/auth/SignupModal'
-import { GlobalProvider, useGlobalContext } from './context/GlobalContext'
 
-function AppContent() {
+function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
-  const { setIsModalOpen } = useGlobalContext();
-
-  // Update global modal state when any modal opens or closes
-  useEffect(() => {
-    setIsModalOpen(isLoginModalOpen || isSignupModalOpen);
-  }, [isLoginModalOpen, isSignupModalOpen, setIsModalOpen]);
 
   const handleOpenLoginModal = () => {
     setIsLoginModalOpen(true);
@@ -66,14 +59,6 @@ function AppContent() {
       />
     </div>
   )
-}
-
-function App() {
-  return (
-    <GlobalProvider>
-      <AppContent />
-    </GlobalProvider>
-  );
 }
 
 export default App

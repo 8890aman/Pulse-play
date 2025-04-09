@@ -164,13 +164,13 @@ const LiveChip = ({ viewers }) => {
   }, []);
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="bg-red-600 backdrop-blur-sm px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-2 shadow-lg hover:bg-red-500 transition-colors group">
-        <span className={`inline-block w-2 h-2 rounded-full ${isBlinking ? 'bg-white animate-pulse' : 'bg-white/80'}`}></span>
+    <div className="flex items-center gap-1 sm:gap-3 flex-wrap">
+      <div className="bg-red-600 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2 shadow-lg hover:bg-red-500 transition-colors group">
+        <span className={`inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full ${isBlinking ? 'bg-white animate-pulse' : 'bg-white/80'}`}></span>
         <span className="text-white font-semibold">LIVE</span>
       </div>
-      <div className="bg-black/50 backdrop-blur px-3 py-1.5 rounded-md">
-        <span className="text-white font-semibold text-sm">
+      <div className="bg-black/50 backdrop-blur px-2 sm:px-3 py-1 sm:py-1.5 rounded-md">
+        <span className="text-white font-semibold text-xs sm:text-sm">
           <AnimatedViewerCount count={viewers} /> viewers
         </span>
       </div>
@@ -370,7 +370,7 @@ const Home = () => {
             <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
             Live channels we think you'll like
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {channels.map((channel) => (
               <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
                 {/* Thumbnail */}
@@ -380,28 +380,28 @@ const Home = () => {
                     alt={channel.title}
                     className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute bottom-2 left-2">
+                  <div className="absolute bottom-2 left-2 scale-90 sm:scale-100 origin-bottom-left">
                     <LiveChip viewers={channel.viewers} />
                   </div>
                 </div>
                 
                 {/* Stream Info */}
-                <div className="mt-3">
+                <div className="mt-2 sm:mt-3">
                   <div className="flex">
-                    <div className="w-10 h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
                       {channel.streamer.charAt(0)}
                     </div>
                     <div className="ml-2 overflow-hidden">
-                      <h3 className="text-[#EBD3F8] font-medium truncate group-hover:text-[#EBD3F8]/80 transition-colors">
+                      <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium truncate group-hover:text-[#EBD3F8]/80 transition-colors">
                         {channel.title}
                       </h3>
-                      <p className="text-[#EBD3F8]/80 text-sm">{channel.streamer}</p>
-                      <p className="text-[#EBD3F8]/60 text-sm">{channel.game}</p>
-                      <div className="flex gap-2 mt-1 flex-wrap">
+                      <p className="text-[#EBD3F8]/80 text-xs sm:text-sm">{channel.streamer}</p>
+                      <p className="text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
+                      <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
                         {channel.tags.map((tag, index) => (
                           <span 
                             key={index}
-                            className="px-2 py-0.5 bg-[#2A2A2D] text-[#EBD3F8]/80 text-xs rounded-full"
+                            className="px-1.5 sm:px-2 py-0.5 bg-[#2A2A2D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
                           >
                             {tag}
                           </span>
@@ -504,7 +504,7 @@ const Home = () => {
             <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
             Discover More Streams
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             {channels.map((channel) => (
               <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
                 <div className="relative rounded-xl overflow-hidden shadow-lg group-hover:shadow-[#EBD3F8]/20 transition-all duration-300">
@@ -516,7 +516,7 @@ const Home = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {/* Live Badge & Duration */}
-                    <div className="absolute top-2 left-2">
+                    <div className="absolute top-2 left-2 scale-90 sm:scale-100 origin-top-left">
                       <LiveChip viewers={channel.viewers} />
                     </div>
                     {/* Gradient Overlay */}
@@ -524,22 +524,22 @@ const Home = () => {
                   </div>
 
                   {/* Stream Info */}
-                  <div className="p-4 bg-[#2A2A2D]">
+                  <div className="p-2 sm:p-4 bg-[#2A2A2D]">
                     <div className="flex">
-                      <div className="w-10 h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
                         {channel.streamer.charAt(0)}
                       </div>
-                      <div className="ml-3">
-                        <h3 className="text-[#EBD3F8] font-medium line-clamp-1 group-hover:text-[#EBD3F8]/80 transition-colors">
+                      <div className="ml-2 sm:ml-3">
+                        <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium line-clamp-1 group-hover:text-[#EBD3F8]/80 transition-colors">
                           {channel.title}
                         </h3>
-                        <p className="text-[#EBD3F8]/80 text-sm">{channel.streamer}</p>
-                        <p className="text-[#EBD3F8]/60 text-sm">{channel.game}</p>
-                        <div className="flex gap-2 mt-2 flex-wrap">
+                        <p className="text-[#EBD3F8]/80 text-xs sm:text-sm">{channel.streamer}</p>
+                        <p className="text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
+                        <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2 flex-wrap">
                           {channel.tags.map((tag, index) => (
                             <span 
                               key={index}
-                              className="px-2 py-0.5 bg-[#1A1A1D] text-[#EBD3F8]/80 text-xs rounded-full"
+                              className="px-1.5 sm:px-2 py-0.5 bg-[#1A1A1D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
                             >
                               {tag}
                             </span>

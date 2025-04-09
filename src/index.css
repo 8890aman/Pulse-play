@@ -12,3 +12,13 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* Ensure navbar and mobile menu always stay on top */
+nav {
+  isolation: isolate;
+  z-index: 9999 !important;
+}
+
+nav > * {
+  z-index: inherit;
+}
