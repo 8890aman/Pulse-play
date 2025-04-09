@@ -118,7 +118,7 @@ const ShareModel = ({ open, onClose, streamData }) => {
       {/* Hidden audio element for share sound */}
       <audio 
         ref={shareAudioRef} 
-        src="/src/assets/sound effect.m4a" 
+        src="/assets/sound effect.m4a" 
         preload="auto"
         style={{ display: 'none' }}
         onError={(e) => console.error("Error loading audio:", e)}

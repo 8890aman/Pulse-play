@@ -318,7 +318,7 @@ const Home = () => {
               key={videoKey}
               ref={videoRef}
               className="absolute w-full h-full object-cover z-10 sm:rounded-2xl"
-              src="/src/assets/valo.mp4"
+              src="/assets/valo.mp4"
               autoPlay
               loop
               muted

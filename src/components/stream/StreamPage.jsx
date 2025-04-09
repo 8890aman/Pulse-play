@@ -847,7 +847,7 @@ const StreamPage = () => {
         {/* Hidden audio element for follow sound */}
         <audio 
           ref={followAudioRef} 
-          src="/src/assets/sound effect.m4a" 
+          src="/assets/sound effect.m4a" 
           preload="auto"
           style={{ display: 'none' }}
           onError={(e) => console.error("Error loading audio:", e)}
@@ -905,7 +905,7 @@ const StreamPage = () => {
             <ReactPlayer
                 ref={playerRef}
               className="w-full h-full object-cover"
-              url="/src/assets/valo.mp4"
+              url="/assets/valo.mp4"
                 playing={isPlaying}
                 controls={false}
                 loop={true}
