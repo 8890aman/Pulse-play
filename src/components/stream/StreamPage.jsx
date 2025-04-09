@@ -1404,7 +1404,7 @@ const StreamPage = () => {
                     touchAction: isMobileDevice ? 'none' : 'auto'
                   }}
                 >
-                  <div className="flex flex-col min-h-[40vh] max-h-[60vh]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
+                  <div className="flex flex-col min-h-[40vh] max-h-[62vh] border-t-4 border-[#EBD3F8]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
                     {/* Chat Header with Close Button */}
                     <div className="p-3 border-b border-[#1A1A1D] sticky top-0 bg-[#2A2A2D]/50 backdrop-blur-sm z-[5]">
                       <div className="flex items-center justify-between mb-2">
