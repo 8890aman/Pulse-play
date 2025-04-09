@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@material-tailwind/react";
-import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle, Home, Star, Compass, TrendingUp, Calendar, Gamepad2 } from 'lucide-react';
+import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle, Home, Star, Compass, TrendingUp, Calendar, Gamepad2, Play } from 'lucide-react';
 import NotificationModel from '../models/NotificationModel';
 import GiftModel from '../models/GiftModel';
 
@@ -109,12 +109,9 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
                   {/* Energy glow behind play button */}
                   <div className="absolute w-5 h-5 rounded-full bg-white/10 blur-md"></div>
                   
-                  {/* Play Triangle with glow */}
+                  {/* Play icon */}
                   <div className="flex items-center justify-center w-full h-full z-10">
-                    <div className="relative w-4 h-4.5 ml-0.5">
-                      <div className="absolute inset-0 bg-white clip-path-triangle"></div>
-                      <div className="absolute inset-0 bg-white clip-path-triangle blur-[1px] opacity-70"></div>
-                    </div>
+                    <Play className="w-5 h-5 text-white fill-white" strokeWidth={1.5} />
                   </div>
                 </div>
               </div>
@@ -123,7 +120,6 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
                 <span className="text-white text-xl font-bold leading-none tracking-tight group-hover:text-[#EBD3F8] transition-colors">
                   Pulse<span className="bg-gradient-to-r from-[#C77DFF] to-[#9D4EDD] text-transparent bg-clip-text">Play</span>
                 </span>
-                <span className="text-[9px] text-[#C77DFF]/80 leading-none mt-0.5">LIVE STREAMING</span>
               </div>
             </Link>
           </div>
