@@ -10,7 +10,6 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [giftModelOpen, setGiftModelOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
   const location = useLocation();
@@ -28,20 +27,6 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
     { path: '/trending', icon: <TrendingUp />, label: 'Trending' },
     { path: '/events', icon: <Calendar />, label: 'Events' },
   ];
-
-  // Detect scroll for navbar style changes
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -85,7 +70,7 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
 
   return (
     <>
-      <nav className={`${isScrolled ? 'bg-[#1A1A1D] shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300`}>
+      <nav className="bg-[#1A1A1D] fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300 shadow-lg">
         <div className="h-16 flex items-center justify-between max-w-[2000px] mx-auto px-4 md:px-6">
           {/* Left section - Logo */}
           <div className="flex items-center">
