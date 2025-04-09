@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Tabs, TabsHeader, TabsBody, Tab, TabPanel } from "@material-tailwind/react";
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, Share2, Heart, MessageCircle, Image, Smile, ChevronLeft, ChevronRight, Gift, X, Search, ChevronDown } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Minimize, Share2, Heart, MessageCircle, Image, Smile, ChevronLeft, ChevronRight, Gift, X, Search, ChevronDown, Check } from 'lucide-react';
 import ReactPlayer from 'react-player';
 import 'plyr/dist/plyr.css';
 import ShareModel from './ShareModel';
+import DonationModal from './DonationModal';
 
 const StreamPage = () => {
   // Scroll to top when component mounts
@@ -297,39 +298,64 @@ const StreamPage = () => {
   };
 
   const getRandomMessage = () => {
-    const messageTypes = ['text', 'gif', 'sticker'];
-    const type = messageTypes[Math.floor(Math.random() * messageTypes.length)];
+    const messageTypes = ['text', 'gif', 'sticker', 'donation'];
+    const randomType = messageTypes[Math.floor(Math.random() * (messageTypes.length - 1))]; // Exclude donations from random generation
 
-    if (type === 'gif') {
-      const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+    if (randomType === 'gif') {
       return {
         type: 'gif',
-        gifUrl: randomGif.url,
-        message: randomGif.title
+        gifId: gifs[Math.floor(Math.random() * gifs.length)].id,
+        gifUrl: gifs[Math.floor(Math.random() * gifs.length)].url,
+        message: ''
       };
-    } else if (type === 'sticker') {
-      const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
+    } else if (randomType === 'sticker') {
       return {
         type: 'sticker',
-        stickerUrl: randomSticker.url,
-        message: randomSticker.title
+        stickerUrl: stickers[Math.floor(Math.random() * stickers.length)].url,
+        message: ''
       };
     } else {
-      const messages = [
-        "That was insane! 🔥",
-        "Let's gooo! 🎮",
+      // Enhanced text messages with more meaningful content
+      const valorantMessages = [
+        "That Operator shot was clean 👌",
+        "Can you play Chamber next round?",
+        "Sage wall saved the round!",
+        "Nice clutch! 💪",
+        "Breach flash was perfect",
+        "Sova dart totally revealed them all",
+        "Let's rush B next round!",
+        "Nice spike defuse with 0.1 sec left!",
+        "That flash around the corner was perfect",
+        "Brim's ult just wiped the site! 🔥",
+        "KAY/O knife shutdown their abilities nicely",
+        "That Raze rocket was insane!",
+        "Viper's pit secured the site perfectly",
+        "That Killjoy ult was so well timed",
+        "Skye's flash into that eco rush was perfect",
+        "Perfect Astra combo with the pull",
+        "OMG that 180° flick was insane! 🔥",
+        "Immortal gameplay right there!",
+        "Are you a radiant smurf? 😱",
+        "What's your sens and DPI?",
+        "Which Vandal skin is that?",
         "PogChamp",
-        "Nice play! 👏",
-        "Kappa",
-        "MonkaS",
-        "LUL",
-        "PogU",
-        "KEKW",
-        "BibleThump"
+        "KEKW that enemy missed everything",
+        "MonkaS with that 1v3",
+        "LUL that spray transfer",
+        "VAC, reported 🤣",
+        "This is better than the VCT matches!",
+        "Your crosshair placement is insane!",
+        "Do you play professionally?",
+        "Can you share your settings after this game?",
+        "You should start streaming on Pulse Play!",
+        "What's your rank? Must be at least Diamond!",
+        "That ace was incredible, clip that!",
+        "Love your gameplay style, very tactical",
+        "You make this game look easy honestly"
       ];
       return {
         type: 'text',
-        message: messages[Math.floor(Math.random() * messages.length)]
+        message: valorantMessages[Math.floor(Math.random() * valorantMessages.length)]
       };
     }
   };
@@ -871,6 +897,131 @@ const StreamPage = () => {
     };
   }, [isMobileDevice, isChatOpen]);
 
+  // Add state for donation modal
+  const [showDonationModal, setShowDonationModal] = useState(false);
+  
+  // ... existing code - add before handleSendMessage function
+  
+  // Add this near the other modal handling functions
+  const handleDonationClick = () => {
+    console.log("Donation button clicked");
+    setShowDonationModal(true);
+  };
+
+  const handleCloseDonation = () => {
+    console.log("Closing donation modal");
+    setShowDonationModal(false);
+  };
+  
+  // Add donation handler
+  const handleDonation = (amount, message) => {
+    // Define the generateRandomUsername function inside this scope if it's not accessible
+    const generateRandomUsername = () => {
+      const adjectives = ['Happy', 'Cool', 'Pro', 'Epic', 'Super', 'Mega', 'Ultra'];
+      const nouns = ['Gamer', 'Player', 'Streamer', 'Fan', 'Viewer', 'Champion'];
+      const number = Math.floor(Math.random() * 1000);
+      return `${adjectives[Math.floor(Math.random() * adjectives.length)]}${nouns[Math.floor(Math.random() * nouns.length)]}${number}`;
+    };
+    
+    // Predefined donation celebration messages
+    const celebrationPhrases = [
+      "Thanks for the support!",
+      "You're amazing!",
+      "Much appreciated!",
+      "Thank you so much!",
+      "You rock!",
+      "This helps a lot!",
+      "Wow, thank you!",
+      "You're the best!",
+      "Thanks for keeping the stream going!",
+      "This means a lot!"
+    ];
+    
+    // Create a special donation message object
+    const newMessage = {
+      id: Date.now(),
+      user: "You",
+      type: "donation",
+      amount: amount,
+      isPoints: true,
+      message: message || celebrationPhrases[Math.floor(Math.random() * celebrationPhrases.length)],
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=You",
+      role: "viewer",
+      badges: ["Donor"],
+      reactions: { "🙏": 3, "❤️": 5, "👑": 2 }
+    };
+    
+    // Add the donation message to chat
+    setChatMessages(prev => {
+      const updatedMessages = [...prev, newMessage];
+      if (updatedMessages.length > 15) {
+        return updatedMessages.slice(updatedMessages.length - 15);
+      }
+      return updatedMessages;
+    });
+    
+    // Emit the same pointsPurchase event as the GiftModel to update the navbar points counter
+    // Simulate the user's current points and calculate the new balance after donation
+    const userCurrentPoints = 1000; // This would normally be fetched from a user state or context
+    const newPoints = userCurrentPoints - amount;
+    
+    // Create and dispatch the event to update the navbar
+    const pointsUpdateEvent = new CustomEvent('pointsPurchase', {
+      detail: { 
+        currentPoints: userCurrentPoints,
+        newPoints: newPoints,
+        purchasedPoints: -amount, // Negative since we're spending points
+        isChatDonation: true
+      }
+    });
+    window.dispatchEvent(pointsUpdateEvent);
+    
+    // Add automated thank-you responses from other users after a short delay
+    setTimeout(() => {
+      // Random thankful responses from other users
+      const thankfulResponses = [
+        "Thanks for supporting the stream!",
+        "Wow, generous donation!",
+        "You're awesome for donating!",
+        "Legend status confirmed!",
+        "Much respect for the donation!",
+        "Top tier supporter right here!"
+      ];
+      
+      // Using the generateRandomUsername function from the outer scope
+      const username = generateRandomUsername();
+      
+      const responseMessage = {
+        id: Date.now() + 1,
+        user: username,
+        type: "text",
+        message: thankfulResponses[Math.floor(Math.random() * thankfulResponses.length)],
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`,
+        role: "viewer",
+        badges: getRandomBadges(),
+        reactions: { "👍": Math.floor(Math.random() * 5) + 1 }
+      };
+      
+      setChatMessages(prev => {
+        const updatedMessages = [...prev, responseMessage];
+        if (updatedMessages.length > 15) {
+          return updatedMessages.slice(updatedMessages.length - 15);
+        }
+        return updatedMessages;
+      });
+      
+      // Scroll chat to bottom
+      if (desktopChatRef.current) {
+        desktopChatRef.current.scrollTop = desktopChatRef.current.scrollHeight;
+      }
+      if (isFullscreen && fullscreenChatRef.current) {
+        fullscreenChatRef.current.scrollTop = fullscreenChatRef.current.scrollHeight;
+      }
+    }, 1500);
+  };
+
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
       <div className="max-w-7xl mx-auto px-0">
@@ -889,6 +1040,14 @@ const StreamPage = () => {
           open={showShareModel} 
           onClose={handleCloseShare} 
           streamData={streamData}
+        />
+        
+        {/* Donation Modal */}
+        <DonationModal 
+          isOpen={showDonationModal} 
+          onClose={handleCloseDonation} 
+          streamerName={streamData.streamer}
+          onDonate={handleDonation}
         />
         
         <div className="grid grid-cols-12 gap-0 md:gap-4 pt-0 mt-0">
@@ -1050,6 +1209,22 @@ const StreamPage = () => {
                                   className="w-full max-w-[200px] rounded-lg"
                                 />
                               </div>
+                            ) : message.type === 'sticker' ? (
+                              <div className="mt-1 rounded-lg overflow-hidden inline-block">
+                                <img 
+                                  src={message.stickerUrl}
+                                  alt={message.message || "Sticker"}
+                                  className="max-h-24 max-w-full object-contain"
+                                />
+                              </div>
+                            ) : message.type === 'donation' ? (
+                              <div className="mt-1 p-2 bg-gradient-to-r from-[#EBD3F8]/10 to-[#EBD3F8]/20 rounded-lg">
+                                <div className="flex items-center text-[#EBD3F8] font-bold mb-1">
+                                  <Gift className="h-4 w-4 mr-1" />
+                                  <span>Donated {message.isPoints ? message.amount : `$${message.amount}`} {message.isPoints ? 'Points' : ''}</span>
+                                </div>
+                                {message.message && <p className="text-[#EBD3F8]/90 text-sm">{message.message}</p>}
+                              </div>
                             ) : (
                               <p className="text-[#EBD3F8]/90 text-sm mt-0.5 break-words">
                                 {message.message}
@@ -1070,8 +1245,21 @@ const StreamPage = () => {
                           value={fullscreenChatMessage}
                           onChange={(e) => setFullscreenChatMessage(e.target.value)}
                           placeholder="Send a message..."
-                          className="w-full p-2 pr-16 bg-[#1A1A1D] text-[#EBD3F8] border border-[#2A2A2D] rounded-lg focus:outline-none focus:ring-1 focus:ring-[#EBD3F8] text-sm"
+                          className="w-full py-3 pl-12 pr-20 bg-[#1A1A1D] text-[#EBD3F8] placeholder-[#EBD3F8]/50 rounded-lg border-none focus:ring-1 focus:ring-[#EBD3F8] transition-colors outline-none"
                         />
+                        
+                        <div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                          {/* Donation Button */}
+                          <button
+                            type="button"
+                            onClick={handleDonationClick}
+                            className="p-1.5 text-[#EBD3F8]/70 hover:text-[#EBD3F8] transition-colors"
+                            title="Donate"
+                          >
+                            <Gift className="w-5 h-5" />
+                          </button>
+                        </div>
+                        
                         <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center space-x-1">
                           {/* Emoji Button */}
                           <button 
@@ -1275,6 +1463,22 @@ const StreamPage = () => {
                                     className="w-full max-w-[200px] rounded-lg"
                                   />
                                 </div>
+                              ) : message.type === 'sticker' ? (
+                                <div className="mt-1 rounded-lg overflow-hidden inline-block">
+                                  <img 
+                                    src={message.stickerUrl}
+                                    alt={message.message || "Sticker"}
+                                    className="max-h-24 max-w-full object-contain"
+                                  />
+                                </div>
+                              ) : message.type === 'donation' ? (
+                                <div className="mt-1 p-2 bg-gradient-to-r from-[#EBD3F8]/10 to-[#EBD3F8]/20 rounded-lg">
+                                  <div className="flex items-center text-[#EBD3F8] font-bold mb-1">
+                                    <Gift className="h-4 w-4 mr-1" />
+                                    <span>Donated {message.isPoints ? message.amount : `$${message.amount}`} {message.isPoints ? 'Points' : ''}</span>
+                                  </div>
+                                  {message.message && <p className="text-[#EBD3F8]/90 text-sm">{message.message}</p>}
+                                </div>
                               ) : (
                                 <p className="text-[#EBD3F8]/90 mt-1 break-words">
                                   {message.message}
@@ -1300,16 +1504,29 @@ const StreamPage = () => {
                       ))}
                     </div>
                     {/* Chat Input */}
-                    <div className="p-2 border-t border-[#1A1A1D] sticky bottom-0 bg-[#2A2A2D]/90 backdrop-blur-sm z-[15]">
+                    <div className="p-2 border-t border-[#1A1A1D] sticky bottom-0 bg-[#2A2A2D]/90 backdrop-blur-sm z-[15] relative">
                       <form onSubmit={handleSendMessage} className="relative">
                         <div className="relative">
                         <input
                           type="text"
                           value={chatMessage}
                           onChange={(e) => setChatMessage(e.target.value)}
-                            placeholder="Send a message..."
-                            className="w-full p-3 pr-24 bg-[#1A1A1D] text-[#EBD3F8] border border-[#2A2A2D] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EBD3F8] text-sm"
+                            placeholder="Send a message"
+                            className="w-full py-3 pl-12 pr-20 bg-[#1A1A1D] text-[#EBD3F8] placeholder-[#EBD3F8]/50 rounded-lg border border-[#1A1A1D] focus:border-[#EBD3F8] focus:ring-1 focus:ring-[#EBD3F8] transition-colors outline-none"
                           />
+                          
+                          <div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                            {/* Donation Button */}
+                            <button
+                              type="button"
+                              onClick={handleDonationClick}
+                              className="p-1.5 text-[#EBD3F8]/70 hover:text-[#EBD3F8] transition-colors"
+                              title="Donate"
+                            >
+                              <Gift className="w-5 h-5" />
+                            </button>
+                          </div>
+                          
                           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
                             {/* Emoji Button */}
                             <button 
@@ -1344,78 +1561,6 @@ const StreamPage = () => {
                             </button>
                           </div>
                         </div>
-                        
-                        {/* Emoji Picker Panel */}
-                        {showEmojiPicker && (
-                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[150px] overflow-y-auto scrollbar-hide">
-                            <div className="flex flex-wrap gap-2">
-                              {["😀", "😂", "❤️", "👍", "🔥", "😍", "🎮", "👏", "🤔", "😱", "🤣", "😎", "🙌", "🚀", "💯"].map(emoji => (
-                                <button
-                                  key={emoji}
-                                  type="button"
-                                  onClick={() => {
-                                    setChatMessage(prev => prev + emoji);
-                                    setShowEmojiPicker(false);
-                                  }}
-                                  className="text-2xl p-1 hover:bg-[#2A2A2D] rounded transition-colors"
-                                >
-                                  {emoji}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {/* GIF Picker Panel */}
-                        {showGifPicker && (
-                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px] scrollbar-hide">
-                            <div className="p-2 border-b border-[#2A2A2D] sticky top-0 bg-[#1A1A1D] z-10">
-                              <div className="text-[#EBD3F8]/80 text-sm font-medium mb-2">Select a GIF</div>
-                              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                                <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Trending</button>
-                                <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Reactions</button>
-                                <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Emotes</button>
-                              </div>
-                            </div>
-                            <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto scrollbar-hide" style={{ maxHeight: "170px" }}>
-                              {gifs.map((gif) => (
-                                <div
-                                  key={gif.id}
-                                  onClick={() => {
-                                    const newMessage = {
-                                      id: Date.now(),
-                                      user: "You",
-                                      type: "gif",
-                                      gifId: gif.id,
-                                      gifUrl: gif.url,
-                                      message: gif.title,
-                                      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=You",
-                                      role: "viewer",
-                                      badges: [],
-                                      reactions: {}
-                                    };
-                                    setChatMessages(prev => {
-                                      const updatedMessages = [...prev, newMessage];
-                                      if (updatedMessages.length > 15) {
-                                        return updatedMessages.slice(updatedMessages.length - 15);
-                                      }
-                                      return updatedMessages;
-                                    });
-                                    setShowGifPicker(false);
-                                  }}
-                                  className="relative group cursor-pointer rounded-lg overflow-hidden bg-[#2A2A2D] aspect-video"
-                                >
-                                  <img
-                                    src={gif.url}
-                                    alt={gif.title}
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                       </form>
                     </div>
                   </div>
@@ -1712,7 +1857,7 @@ const StreamPage = () => {
                   <div 
                     ref={desktopChatRef}
                     onScroll={handleChatScroll}
-                    className="flex-1 overflow-y-auto p-3 pb-16 space-y-3 [&::-webkit-scrollbar]:w-0 scrollbar-hide relative"
+                      className="flex-1 overflow-y-auto p-3 pb-16 space-y-3 [&::-webkit-scrollbar]:w-0 scrollbar-hide relative"
                   >
                     {chatMessages.map((message) => (
                       <div 
@@ -1751,6 +1896,23 @@ const StreamPage = () => {
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                                   </div>
+                                  ) : message.type === 'sticker' ? (
+                                    <div className="relative mt-2 rounded-lg overflow-hidden">
+                                      <img 
+                                        src={message.stickerUrl}
+                                        alt={message.message || "Sticker"}
+                                        className="w-full max-w-[240px] object-contain"
+                                      />
+                                      <div className="absolute inset-0 bg-black/50"></div>
+                                    </div>
+                                  ) : message.type === 'donation' ? (
+                                    <div className="mt-1 p-2 bg-gradient-to-r from-[#EBD3F8]/10 to-[#EBD3F8]/20 rounded-lg">
+                                      <div className="flex items-center text-[#EBD3F8] font-bold mb-1">
+                                        <Gift className="h-4 w-4 mr-1" />
+                                        <span>Donated {message.isPoints ? message.amount : `$${message.amount}`} {message.isPoints ? 'Points' : ''}</span>
+                                      </div>
+                                      {message.message && <p className="text-[#EBD3F8]/90 text-sm">{message.message}</p>}
+                                  </div>
                                 ) : (
                                   <p className="text-[#EBD3F8]/90 mt-1 break-words hover:text-[#EBD3F8] transition-colors">
                                     {message.message}
@@ -1775,16 +1937,29 @@ const StreamPage = () => {
                     ))}
                   </div>
                     {/* Chat Input */}
-                  <div className="p-3 border-t border-[#1A1A1D] bg-[#2A2A2D]/90 backdrop-blur-sm z-[15] relative">
+                    <div className="p-3 border-t border-[#1A1A1D] bg-[#2A2A2D]/90 backdrop-blur-sm z-[15] relative">
                     <form onSubmit={handleSendMessage} className="relative">
                       <div className="relative">
                         <input
                           type="text"
                           value={chatMessage}
                           onChange={(e) => setChatMessage(e.target.value)}
-                              placeholder="Send a message..."
-                              className="w-full p-3 pr-24 bg-[#1A1A1D] text-[#EBD3F8] border border-[#2A2A2D] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#EBD3F8] text-sm"
-                            />
+                            placeholder="Send a message"
+                            className="w-full py-3 pl-12 pr-20 bg-[#1A1A1D] text-[#EBD3F8] placeholder-[#EBD3F8]/50 rounded-lg border border-[#1A1A1D] focus:border-[#EBD3F8] focus:ring-1 focus:ring-[#EBD3F8] transition-colors outline-none"
+                          />
+                          
+                          <div className="absolute left-2 top-1/2 transform -translate-y-1/2 flex space-x-1">
+                            {/* Donation Button */}
+                            <button
+                              type="button"
+                              onClick={handleDonationClick}
+                              className="p-1.5 text-[#EBD3F8]/70 hover:text-[#EBD3F8] transition-colors"
+                              title="Donate"
+                            >
+                              <Gift className="w-5 h-5" />
+                            </button>
+                          </div>
+                          
                             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
                             {/* Emoji Button */}
                                 <button 
@@ -1819,78 +1994,6 @@ const StreamPage = () => {
                         </button>
                             </div>
                               </div>
-                              
-                    {/* Emoji Picker Panel */}
-                    {showEmojiPicker && (
-                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[200px] overflow-y-auto scrollbar-hide">
-                        <div className="flex flex-wrap gap-2">
-                          {["😀", "😂", "❤️", "👍", "🔥", "😍", "🎮", "👏", "🤔", "😱", "🤣", "😎", "🙌", "🚀", "💯"].map(emoji => (
-                          <button 
-                              key={emoji}
-                            type="button"
-                            onClick={() => {
-                                setChatMessage(prev => prev + emoji);
-                              setShowEmojiPicker(false);
-                            }}
-                              className="text-2xl p-1 hover:bg-[#2A2A2D] rounded transition-colors"
-                          >
-                              {emoji}
-                          </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* GIF Picker Panel */}
-                    {showGifPicker && (
-                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px] scrollbar-hide">
-                        <div className="p-2 border-b border-[#2A2A2D] sticky top-0 bg-[#1A1A1D] z-10">
-                          <div className="text-[#EBD3F8]/80 text-sm font-medium mb-2">Select a GIF</div>
-                          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                            <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Trending</button>
-                            <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Reactions</button>
-                            <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Emotes</button>
-                  </div>
-                        </div>
-                        <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto scrollbar-hide" style={{ maxHeight: "170px" }}>
-                                      {gifs.map((gif) => (
-                                        <div
-                                          key={gif.id}
-                                  onClick={() => {
-                                    const newMessage = {
-                                      id: Date.now(),
-                                      user: "You",
-                                      type: "gif",
-                                      gifId: gif.id,
-                                      gifUrl: gif.url,
-                                                message: gif.title,
-                                      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                                      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=You",
-                                      role: "viewer",
-                                      badges: [],
-                                      reactions: {}
-                                    };
-                                setChatMessages(prev => {
-                                  const updatedMessages = [...prev, newMessage];
-                                  if (updatedMessages.length > 15) {
-                                    return updatedMessages.slice(updatedMessages.length - 15);
-                                  }
-                                  return updatedMessages;
-                                });
-                                    setShowGifPicker(false);
-                                  }}
-                              className="relative group cursor-pointer rounded-lg overflow-hidden bg-[#2A2A2D] aspect-video"
-                            >
-                              <img
-                                src={gif.url}
-                                alt={gif.title}
-                                className="w-full h-full object-cover"
-                                />
-                            </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                   </form>
                 </div>
               </div>

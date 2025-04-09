@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@material-tailwind/react";
-import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle, Home, Star, Compass, TrendingUp, Calendar, Gamepad2, Play } from 'lucide-react';
+import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle, Home, Star, Compass, TrendingUp, Calendar, Gamepad2, Play, Coins } from 'lucide-react';
 import NotificationModel from '../models/NotificationModel';
 import GiftModel from '../models/GiftModel';
 
@@ -10,6 +10,12 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [giftModelOpen, setGiftModelOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [points, setPoints] = useState(1000);
+  const [animatingPoints, setAnimatingPoints] = useState(false);
+  // eslint-disable-next-line
+  const [targetPoints, setTargetPoints] = useState(1000);
+  const pointsRef = useRef(null);
+  const mobilepointsRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
   const location = useLocation();
@@ -18,6 +24,75 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
   const isActive = (path) => {
     return location.pathname === path;
   };
+
+  // Animation function for points count
+  const animatePointsChange = (startValue, endValue, duration = 2000) => {
+    setAnimatingPoints(true);
+    setTargetPoints(endValue);
+    
+    let startTime;
+    const refs = [pointsRef, mobilepointsRef].filter(ref => ref.current);
+    
+    const animateFrame = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min(1, (timestamp - startTime) / duration);
+      
+      // Easing function for smoother animation
+      const easedProgress = easeOutExpo(progress);
+      const currentValue = Math.floor(startValue + (endValue - startValue) * easedProgress);
+      
+      // Update all refs with the current value
+      refs.forEach(ref => {
+        if (ref.current) {
+          ref.current.textContent = currentValue.toLocaleString();
+          
+          // Add flickering effect during animation
+          if (progress < 1) {
+            ref.current.classList.add('points-animating');
+          } else {
+            ref.current.classList.remove('points-animating');
+          }
+        }
+      });
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateFrame);
+      } else {
+        setPoints(endValue);
+        setAnimatingPoints(false);
+      }
+    };
+    
+    requestAnimationFrame(animateFrame);
+  };
+  
+  // Easing function
+  const easeOutExpo = (x) => {
+    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+  };
+  
+  // Listen for points purchase events and openPointsStore events
+  useEffect(() => {
+    const handlePointsPurchase = (event) => {
+      const { currentPoints, newPoints, isChatDonation } = event.detail;
+      
+      // Different animation duration based on source
+      const animationDuration = isChatDonation ? 1000 : 2000;
+      animatePointsChange(currentPoints, newPoints, animationDuration);
+    };
+    
+    const handleOpenPointsStore = () => {
+      setGiftModelOpen(true);
+    };
+    
+    window.addEventListener('pointsPurchase', handlePointsPurchase);
+    window.addEventListener('openPointsStore', handleOpenPointsStore);
+    
+    return () => {
+      window.removeEventListener('pointsPurchase', handlePointsPurchase);
+      window.removeEventListener('openPointsStore', handleOpenPointsStore);
+    };
+  }, []);
 
   // Navigation links - same as in Sidebar
   const navLinks = [
@@ -159,12 +234,21 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
               </span>
             </button>
             
-            {/* Gift Button */}
+            {/* Points Button with Animation */}
             <button 
-              className="text-[#EBD3F8]/70 hover:text-[#C77DFF] transition-colors hidden sm:flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#2A2A2D]/70"
+              className="text-[#EBD3F8]/70 hover:text-[#C77DFF] transition-colors hidden sm:flex items-center justify-center h-8 rounded-full hover:bg-[#2A2A2D]/70 px-3 relative"
               onClick={() => setGiftModelOpen(true)}
             >
-              <Gift className="w-5 h-5" />
+              <div className="flex items-center relative z-10">
+                <Coins className="w-5 h-5 mr-1.5" />
+                <span className="font-medium text-sm whitespace-nowrap points-value-container">
+                  <span ref={pointsRef} className="points-value font-variant-numeric: tabular-nums">{points.toLocaleString()}</span> Points
+                </span>
+              </div>
+              {/* Animated glow effect when points change */}
+              {animatingPoints && (
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#EBD3F8]/0 via-[#EBD3F8]/30 to-[#EBD3F8]/0 animate-points-glow"></div>
+              )}
             </button>
             
             {/* Auth Buttons - Shown when user is not logged in */}
@@ -331,14 +415,22 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
                 </button>
                 
                 <button 
-                  className="flex-1 flex items-center justify-center space-x-2 py-2.5 text-[#EBD3F8]/80 hover:text-[#C77DFF] transition-colors"
+                  className="flex-1 flex items-center justify-center space-x-2 py-2.5 text-[#EBD3F8]/80 hover:text-[#C77DFF] transition-colors relative"
                   onClick={() => {
                     setIsMenuOpen(false);
                     setGiftModelOpen(true);
                   }}
                 >
-                  <Gift className="w-5 h-5" />
-                  <span>Buy Gifts</span>
+                  <div className="flex items-center z-10">
+                    <Coins className="w-5 h-5 mr-1.5" />
+                    <span className="font-medium text-sm whitespace-nowrap">
+                      <span ref={mobilepointsRef} className="points-value font-variant-numeric: tabular-nums">{points.toLocaleString()}</span> Points
+                    </span>
+                  </div>
+                  {/* Animated glow effect when points change */}
+                  {animatingPoints && (
+                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-[#EBD3F8]/0 via-[#EBD3F8]/30 to-[#EBD3F8]/0 animate-points-glow"></div>
+                  )}
                 </button>
               </div>
 
@@ -383,7 +475,7 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
         onClose={() => setGiftModelOpen(false)} 
       />
       
-      {/* Add CSS for triangle clip path in the logo */}
+      {/* Add CSS for animations */}
       <style jsx="true">{`
         .clip-path-triangle {
           clip-path: polygon(0% 0%, 0% 100%, 100% 50%);
@@ -432,6 +524,31 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
         
         .rotate-orbit-slow {
           animation: rotate-orbit 12s linear infinite;
+        }
+        
+        @keyframes points-glow {
+          0% { opacity: 0; transform: scaleX(0.9); }
+          50% { opacity: 1; transform: scaleX(1.1); }
+          100% { opacity: 0; transform: scaleX(0.9); }
+        }
+        
+        .animate-points-glow {
+          animation: points-glow 1s ease-in-out infinite;
+        }
+        
+        .points-animating {
+          animation: textFlicker 0.2s linear infinite;
+        }
+        
+        @keyframes textFlicker {
+          0% { color: rgba(235, 211, 248, 0.7); }
+          50% { color: rgba(235, 211, 248, 1); }
+          100% { color: rgba(235, 211, 248, 0.7); }
+        }
+        
+        .points-value {
+          font-variant-numeric: tabular-nums;
+          transition: color 0.2s ease;
         }
       `}</style>
     </>
