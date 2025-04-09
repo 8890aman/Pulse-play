@@ -484,6 +484,11 @@ const StreamPage = () => {
         followAudioRef.current.currentTime = 0;
         const playPromise = followAudioRef.current.play();
         
+        // Vibrate device if supported (200ms)
+        if (navigator.vibrate) {
+          navigator.vibrate(200);
+        }
+        
         if (playPromise !== undefined) {
           playPromise.catch(err => {
             console.error("Error playing follow sound:", err);
@@ -1618,31 +1623,35 @@ const StreamPage = () => {
                   {/* Enhanced particles animation */}
                   {isFollowAnimating && (
                     <>
-                      {/* Particle effects */}
-                      {Array.from({ length: 15 }).map((_, i) => {
-                        const size = Math.random() * 4 + 2;
-                        const startPos = Math.random() * 100;
-                        const delay = Math.random() * 0.2;
-                        const duration = Math.random() * 0.5 + 0.3;
+                      {/* Heart particle effects */}
+                      {Array.from({ length: 20 }).map((_, i) => {
+                        const size = Math.random() * 8 + 4; // Larger hearts
+                        const startPos = 45 + (Math.random() * 10 - 5); // More centered
+                        const delay = Math.random() * 0.3;
+                        const duration = Math.random() * 0.8 + 0.6; // Longer animation
                         const xDir = Math.random() > 0.5 ? -1 : 1;
-                        const color = `hsl(${280 + Math.random() * 40}, ${70 + Math.random() * 30}%, ${70 + Math.random() * 30}%)`;
+                        const rotation = Math.random() * 360;
                         
                         return (
                           <span 
                             key={i}
-                            className="absolute rounded-full"
+                            className="absolute z-10 drop-shadow-md"
                             style={{
                               width: `${size}px`,
                               height: `${size}px`,
                               top: '50%',
                               left: `${startPos}%`,
                               opacity: 0,
+                              color: "#EBD3F8", // Theme color for all hearts
+                              textShadow: "0 0 2px #9D4EDD",
                               animation: `buttonParticle ${duration}s ease-out ${delay}s forwards`,
-                              transform: 'translateY(0) translateX(0) scale(0.2)',
-                              '--x-dir': `${xDir * (Math.random() * 15 + 10)}px`, // 10-25px left/right
-                              '--y-dir': `${-1 * (Math.random() * 15 + 10)}px`, // 10-25px up
+                              transform: `translateY(0) translateX(0) scale(0) rotate(${rotation}deg)`,
+                              '--x-dir': `${xDir * (Math.random() * 25 + 15)}px`, // 15-40px left/right
+                              '--y-dir': `${-1 * (Math.random() * 25 + 15)}px`, // 15-40px up
                             }}
-                          />
+                          >
+                            💜
+                          </span>
                         );
                       })}
                       
@@ -1650,13 +1659,33 @@ const StreamPage = () => {
                       <span 
                         className="absolute inset-0 rounded-lg pointer-events-none"
                         style={{
-                          background: 'radial-gradient(circle, rgba(235,211,248,0.6) 0%, rgba(235,211,248,0) 70%)',
-                          animation: 'buttonGlow 0.6s ease-out forwards',
+                          background: 'radial-gradient(circle, rgba(235,211,248,0.8) 0%, rgba(235,211,248,0) 70%)',
+                          animation: 'buttonGlow 0.8s ease-out forwards',
                           opacity: 0
                         }}
                       />
                     </>
                   )}
+                  
+                  {/* Add keyframes for particle animation if not already defined */}
+                  <style jsx>{`
+                    @keyframes buttonParticle {
+                      0% {
+                        opacity: 0.8;
+                        transform: translateY(0) translateX(0) scale(0.2);
+                      }
+                      100% {
+                        opacity: 0;
+                        transform: translateY(var(--y-dir)) translateX(var(--x-dir)) scale(1);
+                      }
+                    }
+                    
+                    @keyframes buttonGlow {
+                      0% { opacity: 0; }
+                      50% { opacity: 0.8; }
+                      100% { opacity: 0; }
+                    }
+                  `}</style>
                   
                   {/* Heart icon with animation */}
                   {isFollowing ? (
