@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button } from "@material-tailwind/react";
 import { X, Bell, Check, Clock, Users, Heart, Gift, MessageCircle } from 'lucide-react';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 const NotificationModel = ({ isOpen, onClose }) => {
+  const { setIsModalOpen } = useGlobalContext();
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -55,6 +57,11 @@ const NotificationModel = ({ isOpen, onClose }) => {
       icon: Clock
     }
   ]);
+
+  // Update global modal state when this modal opens or closes
+  useEffect(() => {
+    setIsModalOpen(isOpen);
+  }, [isOpen, setIsModalOpen]);
 
   const markAllAsRead = () => {
     setNotifications(prev => prev.map(notification => ({

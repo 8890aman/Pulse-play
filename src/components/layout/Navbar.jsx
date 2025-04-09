@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@material-tailwind/react";
-import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle } from 'lucide-react';
+import { Search, Menu, User, LogIn, UserPlus, Bell, Gift, Settings, HelpCircle, Home, Star, Compass, TrendingUp, Calendar, Gamepad2 } from 'lucide-react';
 import NotificationModel from '../models/NotificationModel';
 import GiftModel from '../models/GiftModel';
 
@@ -13,6 +13,21 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const mobileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
+  const location = useLocation();
+
+  // Helper function to check if a link is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
+  // Navigation links - same as in Sidebar
+  const navLinks = [
+    { path: '/', icon: <Home />, label: 'Home' },
+    { path: '/following', icon: <Star />, label: 'Following' },
+    { path: '/browse', icon: <Compass />, label: 'Browse' },
+    { path: '/trending', icon: <TrendingUp />, label: 'Trending' },
+    { path: '/events', icon: <Calendar />, label: 'Events' },
+  ];
 
   // Detect scroll for navbar style changes
   useEffect(() => {
@@ -70,7 +85,7 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
 
   return (
     <>
-      <nav className={`${isScrolled ? 'bg-[#1A1A1D]/90 backdrop-blur-md shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300`}>
+      <nav className={`${isScrolled ? 'bg-[#1A1A1D]/90 backdrop-blur-md shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300`}>
         <div className="h-16 flex items-center justify-between max-w-[2000px] mx-auto px-4 md:px-6">
           {/* Left section - Logo */}
           <div className="flex items-center">
@@ -275,7 +290,7 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
         {isMenuOpen && (
           <div 
             ref={mobileMenuRef}
-            className="md:hidden bg-[#1A1A1D] border-t border-[#2A2A2D]/50 absolute w-full z-40 shadow-xl"
+            className="md:hidden bg-[#1A1A1D] border-t border-[#2A2A2D]/50 absolute w-full z-[999] shadow-xl max-h-[80vh] overflow-y-auto scrollbar-hide"
           >
             <div className="px-4 py-3 space-y-3">
               {/* Search bar */}
@@ -288,6 +303,36 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 text-[#EBD3F8]/50 hover:text-[#C77DFF] transition-colors">
                   <Search className="w-5 h-5" />
                 </button>
+              </div>
+
+              {/* Navigation Links - Added from Sidebar */}
+              <div className="py-3 space-y-1.5 border-t border-[#2A2A2D]/50">
+                {navLinks.map((link) => (
+                  <Link 
+                    key={link.path}
+                    to={link.path} 
+                    className={`flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 ${
+                      isActive(link.path) 
+                      ? 'bg-gradient-to-r from-[#9D4EDD]/20 to-[#C77DFF]/20 text-[#C77DFF] font-medium' 
+                      : 'text-[#EBD3F8]/70 hover:bg-[#2A2A2D]/40 hover:text-[#EBD3F8]'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <div className={`${
+                      isActive(link.path) 
+                      ? 'bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] shadow-lg shadow-[#9D4EDD]/10' 
+                      : 'bg-[#2A2A2D] hover:bg-gradient-to-br hover:from-[#9D4EDD]/50 hover:to-[#C77DFF]/50'
+                    } w-7 h-7 flex items-center justify-center rounded-lg transition-all duration-300 mr-3`}>
+                      {React.cloneElement(link.icon, { 
+                        className: `h-4 w-4 ${isActive(link.path) ? 'text-white' : 'text-[#EBD3F8]/70'}`,
+                        strokeWidth: isActive(link.path) ? 2.5 : 2
+                      })}
+                    </div>
+                    <span className="font-medium text-sm flex-1">
+                      {link.label}
+                    </span>
+                  </Link>
+                ))}
               </div>
 
               {/* Quick Actions */}

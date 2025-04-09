@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button } from "@material-tailwind/react";
 import { X, Gift, Star, Crown, Zap, CreditCard, DollarSign } from 'lucide-react';
+import { useGlobalContext } from '../../context/GlobalContext';
 
 const GiftModel = ({ isOpen, onClose, streamerName = "shanks_ttv" }) => {
+  const { setIsModalOpen } = useGlobalContext();
   const [selectedSubscription, setSelectedSubscription] = useState(null);
+  
+  // Update global modal state when this modal opens or closes
+  useEffect(() => {
+    setIsModalOpen(isOpen);
+  }, [isOpen, setIsModalOpen]);
   
   // Subscription tiers
   const subscriptionTiers = [
