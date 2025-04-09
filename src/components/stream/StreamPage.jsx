@@ -6,6 +6,11 @@ import 'plyr/dist/plyr.css';
 import ShareModel from './ShareModel';
 
 const StreamPage = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [activeTab, setActiveTab] = useState("about");
   const [chatMessage, setChatMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -991,7 +996,7 @@ const StreamPage = () => {
                   {/* Fullscreen Chat Messages */}
                   <div 
                     ref={fullscreenChatRef}
-                    className="flex-1 overflow-y-auto p-2 space-y-2 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#EBD3F8]/40 [&::-webkit-scrollbar-track]:bg-[#1A1A1D]/30"
+                    className="flex-1 overflow-y-auto p-3 pb-16 space-y-3 [&::-webkit-scrollbar]:w-0 scrollbar-hide"
                   >
                     {chatMessages.slice(-12).map((message) => (
                       <div key={message.id} className="bg-black/40 p-2 rounded-lg animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -1069,7 +1074,7 @@ const StreamPage = () => {
                       
                       {/* Emoji Picker Panel */}
                       {showFullscreenEmojiPicker && (
-                        <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[150px] overflow-y-auto">
+                        <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[150px] overflow-y-auto scrollbar-hide">
                           <div className="flex flex-wrap gap-2">
                             {["😀", "😂", "❤️", "👍", "🔥", "😍", "🎮", "👏", "🤔", "😱", "🤣", "😎", "🙌", "🚀", "💯"].map(emoji => (
                               <button
@@ -1205,7 +1210,7 @@ const StreamPage = () => {
                     <div 
                       ref={mobileChatRef} 
                       onScroll={handleChatScroll}
-                      className="flex-1 overflow-y-auto p-2 pb-16 space-y-2.5 relative"
+                      className="flex-1 overflow-y-auto p-2 pb-16 space-y-2.5 relative scrollbar-hide"
                     >
                       {chatMessages.map((message) => (
                         <div key={message.id} className="group bg-[#1A1A1D]/80 p-2 rounded-lg">
@@ -1232,7 +1237,7 @@ const StreamPage = () => {
                               </div>
                               {/* Support for both text and GIF messages */}
                               {message.type === 'gif' ? (
-                                <div className="mt-1.5 rounded-lg overflow-hidden">
+                                <div className="mt-1.5 rounded-lg overflow-hidden scrollbar-hide">
                                   <img 
                                     src={message.gifUrl || `https://media.giphy.com/media/${message.gifId}/giphy.gif`}
                                     alt={message.message || "GIF"}
@@ -1311,7 +1316,7 @@ const StreamPage = () => {
                         
                         {/* Emoji Picker Panel */}
                         {showEmojiPicker && (
-                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[200px] overflow-y-auto">
+                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[150px] overflow-y-auto scrollbar-hide">
                             <div className="flex flex-wrap gap-2">
                               {["😀", "😂", "❤️", "👍", "🔥", "😍", "🎮", "👏", "🤔", "😱", "🤣", "😎", "🙌", "🚀", "💯"].map(emoji => (
                                 <button
@@ -1332,16 +1337,16 @@ const StreamPage = () => {
                         
                         {/* GIF Picker Panel */}
                         {showGifPicker && (
-                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px]">
+                          <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px] scrollbar-hide">
                             <div className="p-2 border-b border-[#2A2A2D] sticky top-0 bg-[#1A1A1D] z-10">
                               <div className="text-[#EBD3F8]/80 text-sm font-medium mb-2">Select a GIF</div>
-                              <div className="flex gap-2 overflow-x-auto pb-2">
+                              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                                 <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Trending</button>
                                 <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Reactions</button>
                                 <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Emotes</button>
                               </div>
                             </div>
-                            <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto" style={{ maxHeight: "170px" }}>
+                            <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto scrollbar-hide" style={{ maxHeight: "170px" }}>
                               {gifs.map((gif) => (
                                 <div
                                   key={gif.id}
@@ -1605,7 +1610,7 @@ const StreamPage = () => {
         
               <div 
                 ref={carouselRef}
-                className="overflow-x-auto [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#EBD3F8]/40 [&::-webkit-scrollbar-track]:bg-[#1A1A1D] hover:[&::-webkit-scrollbar-thumb]:bg-[#EBD3F8]/60"
+                className="overflow-x-auto [&::-webkit-scrollbar]:h-0 scrollbar-hide"
               >
                 <div className="flex space-x-4 pb-4">
                   {relatedStreams.map((stream) => (
@@ -1676,7 +1681,7 @@ const StreamPage = () => {
                   <div 
                     ref={desktopChatRef}
                     onScroll={handleChatScroll}
-                    className="flex-1 overflow-y-auto p-3 pb-16 space-y-3 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#EBD3F8]/40 [&::-webkit-scrollbar-track]:bg-[#1A1A1D] hover:[&::-webkit-scrollbar-thumb]:bg-[#EBD3F8]/60 relative"
+                    className="flex-1 overflow-y-auto p-3 pb-16 space-y-3 [&::-webkit-scrollbar]:w-0 scrollbar-hide relative"
                   >
                     {chatMessages.map((message) => (
                       <div 
@@ -1786,7 +1791,7 @@ const StreamPage = () => {
                               
                     {/* Emoji Picker Panel */}
                     {showEmojiPicker && (
-                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[200px] overflow-y-auto">
+                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl p-2 border border-[#2A2A2D] max-h-[200px] overflow-y-auto scrollbar-hide">
                         <div className="flex flex-wrap gap-2">
                           {["😀", "😂", "❤️", "👍", "🔥", "😍", "🎮", "👏", "🤔", "😱", "🤣", "😎", "🙌", "🚀", "💯"].map(emoji => (
                           <button 
@@ -1807,16 +1812,16 @@ const StreamPage = () => {
                     
                     {/* GIF Picker Panel */}
                     {showGifPicker && (
-                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px]">
+                      <div className="absolute bottom-full left-0 right-0 mb-2 bg-[#1A1A1D] rounded-lg shadow-xl overflow-hidden border border-[#2A2A2D] max-h-[250px] scrollbar-hide">
                         <div className="p-2 border-b border-[#2A2A2D] sticky top-0 bg-[#1A1A1D] z-10">
                           <div className="text-[#EBD3F8]/80 text-sm font-medium mb-2">Select a GIF</div>
-                          <div className="flex gap-2 overflow-x-auto pb-2">
+                          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                             <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Trending</button>
                             <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Reactions</button>
                             <button className="px-2 py-1 bg-[#2A2A2D] text-[#EBD3F8]/70 rounded-full text-xs whitespace-nowrap">Emotes</button>
                   </div>
                         </div>
-                        <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto" style={{ maxHeight: "170px" }}>
+                        <div className="p-2 grid grid-cols-2 gap-2 overflow-y-auto scrollbar-hide" style={{ maxHeight: "170px" }}>
                                       {gifs.map((gif) => (
                                         <div
                                           key={gif.id}
