@@ -235,7 +235,7 @@ const Events = () => {
         
         {/* Event Detail Modal */}
         {selectedEvent && (
-          <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4 md:p-0">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-0">
             {/* Backdrop */}
             <div 
               className="absolute inset-0 bg-black/80 backdrop-blur-sm"
@@ -243,7 +243,7 @@ const Events = () => {
             ></div>
             
             {/* Modal Content */}
-            <div className="bg-[#1A1A1D] rounded-xl overflow-hidden w-full max-w-4xl relative z-[2001] max-h-[90vh] flex flex-col shadow-2xl">
+            <div className="bg-[#1A1A1D] rounded-xl overflow-hidden w-full max-w-4xl relative z-[10000] max-h-[90vh] flex flex-col shadow-2xl">
               {/* Header Image */}
               <div className="relative h-64 w-full">
                 <img 
