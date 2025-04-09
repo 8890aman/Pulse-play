@@ -1449,8 +1449,11 @@ const StreamPage = () => {
                 <Card 
                   className="bg-[#1A1A1D] border-none shadow-xl fixed z-[55] bottom-0 left-0 right-0 rounded-none rounded-t-xl overflow-hidden"
                   style={{ 
-                    maxHeight: '70vh',
-                    touchAction: isMobileDevice ? 'none' : 'auto'
+                    maxHeight: isLandscape ? '60vh' : '70vh',
+                    touchAction: isMobileDevice ? 'none' : 'auto',
+                    width: isLandscape ? '50%' : '100%',
+                    right: isLandscape ? '0' : 'auto',
+                    left: isLandscape ? 'auto' : '0'
                   }}
                 >
                   <div className="flex flex-col min-h-[40vh] max-h-[60vh] border-t-2 border-[#EBD3F8]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
