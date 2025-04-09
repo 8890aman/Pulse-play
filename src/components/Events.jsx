@@ -105,28 +105,28 @@ const Events = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-8 custom-scrollbar">
+    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-4 sm:p-6 md:p-8 custom-scrollbar">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-white text-3xl font-bold mb-2 flex items-center">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] flex items-center justify-center shadow-lg shadow-[#9D4EDD]/10 mr-3">
-              <Calendar className="w-5 h-5 text-white" />
+        <div className="mb-8 md:mb-12">
+          <h1 className="text-white text-2xl md:text-3xl font-bold mb-2 flex items-center">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] flex items-center justify-center shadow-lg shadow-[#9D4EDD]/10 mr-3">
+              <Calendar className="w-4 h-4 md:w-5 md:h-5 text-white" />
             </div>
             Esports Events
           </h1>
-          <p className="text-[#EBD3F8]/70 text-lg">
+          <p className="text-[#EBD3F8]/70 text-base md:text-lg">
             Stay updated with the biggest esports tournaments and events
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-[#2A2A2D] mb-8">
+        <div className="flex border-b border-[#2A2A2D] mb-6 md:mb-8 overflow-x-auto no-scrollbar">
           {['upcoming', 'ongoing', 'completed'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 font-medium text-base capitalize ${
+              className={`px-3 sm:px-4 md:px-6 py-2 md:py-3 font-medium text-sm md:text-base capitalize flex-shrink-0 ${
                 activeTab === tab
                   ? 'text-[#C77DFF] border-b-2 border-[#9D4EDD]'
                   : 'text-[#EBD3F8]/70 hover:text-[#EBD3F8]'
@@ -138,7 +138,7 @@ const Events = () => {
         </div>
 
         {/* Events Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {events[activeTab].map((event) => (
             <div
               key={event.id}
@@ -175,28 +175,28 @@ const Events = () => {
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="text-[#EBD3F8] font-semibold text-xl mb-2 group-hover:text-[#C77DFF] transition-colors">
+              <div className="p-4 sm:p-6">
+                <h3 className="text-[#EBD3F8] font-semibold text-lg sm:text-xl mb-2 group-hover:text-[#C77DFF] transition-colors line-clamp-2">
                   {event.title}
                 </h3>
-                <p className="text-[#EBD3F8]/60 mb-4">{event.game}</p>
+                <p className="text-[#EBD3F8]/60 mb-4 text-sm sm:text-base">{event.game}</p>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <div className="flex items-center text-[#EBD3F8]/80">
-                    <Clock className="w-4 h-4 mr-2" />
-                    <span className="text-sm">{event.date}</span>
+                    <Clock className="w-4 h-4 flex-shrink-0 mr-2" />
+                    <span className="text-xs sm:text-sm truncate">{event.date}</span>
                   </div>
                   <div className="flex items-center text-[#EBD3F8]/80">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    <span className="text-sm">{event.location}</span>
+                    <MapPin className="w-4 h-4 flex-shrink-0 mr-2" />
+                    <span className="text-xs sm:text-sm truncate">{event.location}</span>
                   </div>
                   <div className="flex items-center text-[#EBD3F8]/80">
-                    <Trophy className="w-4 h-4 mr-2" />
-                    <span className="text-sm">{event.prizePool}</span>
+                    <Trophy className="w-4 h-4 flex-shrink-0 mr-2" />
+                    <span className="text-xs sm:text-sm truncate">{event.prizePool}</span>
                   </div>
                   <div className="flex items-center text-[#EBD3F8]/80">
-                    <Users className="w-4 h-4 mr-2" />
-                    <span className="text-sm">{event.participants} Teams</span>
+                    <Users className="w-4 h-4 flex-shrink-0 mr-2" />
+                    <span className="text-xs sm:text-sm truncate">{event.participants} Teams</span>
                   </div>
                 </div>
 
@@ -458,6 +458,16 @@ const Events = () => {
         .fancy-scrollbar::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(to bottom, #C77DFF, #9D4EDD);
           background-clip: padding-box;
+        }
+
+        /* Hide scrollbar for tabs while allowing scroll functionality */
+        .no-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;  /* Chrome, Safari and Opera */
         }
         
         /* Make scrollbar appear on hover only for a cleaner look */

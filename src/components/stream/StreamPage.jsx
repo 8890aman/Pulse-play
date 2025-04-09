@@ -78,27 +78,27 @@ const StreamPage = () => {
   const [gifs] = useState([
     {
       id: 'pogchamp',
-      url: 'https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif',
+      url: 'https://media.tenor.com/ex4eO3mhTPIAAAAC/pogchamp-twitch.gif',
       title: 'PogChamp'
     },
     {
       id: 'kappa',
-      url: 'https://media.giphy.com/media/1ykTax6hrAKpTQ0Mnb/giphy.gif',
+      url: 'https://media.tenor.com/YnuJEMXgqK4AAAAC/kappa-twitch-emote.gif',
       title: 'Kappa'
     },
     {
       id: 'lul',
-      url: 'https://media.giphy.com/media/10JhviFuU2RBTU/giphy.gif',
+      url: 'https://media.tenor.com/T7MPUEwI4dEAAAAC/lul-twitch.gif',
       title: 'LUL'
     },
     {
       id: 'pog',
-      url: 'https://media.giphy.com/media/8YBm95B5JNIXTWp5on/giphy.gif',
+      url: 'https://media.tenor.com/1UE5dMyW3_MAAAAC/pog-poggers.gif',
       title: 'POG'
     },
     {
       id: 'catjam',
-      url: 'https://media.giphy.com/media/jpbnoe3UIa8TU8LM13/giphy.gif',
+      url: 'https://media.tenor.com/3U4GPFpSeyQAAAAC/cat-jam-cat.gif',
       title: 'CatJam'
     }
   ]);
@@ -106,22 +106,22 @@ const StreamPage = () => {
   const [stickers] = useState([
     {
       id: 'pepe',
-      url: 'https://media1.tenor.com/m/QV-CJ1HnpB0AAAAd/pepe-the-frog-happy-pepe.gif',
+      url: 'https://media.tenor.com/QV-CJ1HnpB0AAAAd/pepe-the-frog-happy-pepe.gif',
       title: 'Happy Pepe'
     },
     {
       id: 'peepohappy',
-      url: 'https://media1.tenor.com/m/FXLB8U7UYCkAAAAd/peepo-happy-peepo.gif',
+      url: 'https://media.tenor.com/FXLB8U7UYCkAAAAd/peepo-happy-peepo.gif',
       title: 'PeepoHappy'
     },
     {
       id: 'peeposad',
-      url: 'https://media1.tenor.com/m/pMNUOYUbhWAAAAAd/peepo-sad-peepo.gif',
+      url: 'https://media.tenor.com/pMNUOYUbhWAAAAAd/peepo-sad-peepo.gif',
       title: 'PeepoSad'
     },
     {
       id: 'peepoclap',
-      url: 'https://media1.tenor.com/m/7HVbzOEbR-EAAAAd/peepo-clap.gif',
+      url: 'https://media.tenor.com/7HVbzOEbR-EAAAAd/peepo-clap.gif',
       title: 'PeepoClap'
     }
   ]);
@@ -443,47 +443,58 @@ const StreamPage = () => {
   const lastProgressRef = useRef({ played: 0, playedSeconds: 0 });
   const stuckCheckTimerRef = useRef(null);
   
+  // Add this effect near the top with other useEffect hooks
   useEffect(() => {
-    // Preload the audio when component mounts
-    if (followAudioRef.current) {
-      followAudioRef.current.load();
-      console.log("Follow sound loaded");
-    }
+    // Create and configure audio element
+    const audio = new Audio('/assets/sound effect.m4a');
+    audio.preload = 'auto';
+    audio.volume = 1.0;
+    
+    // Store the audio element in the ref
+    followAudioRef.current = audio;
+    
+    // Preload the audio
+    const preloadAudio = async () => {
+      try {
+        await audio.load();
+        console.log('Follow sound preloaded successfully');
+      } catch (err) {
+        console.error('Error preloading follow sound:', err);
+      }
+    };
+    
+    preloadAudio();
+    
+    // Cleanup
+    return () => {
+      if (followAudioRef.current) {
+        followAudioRef.current.pause();
+        followAudioRef.current = null;
+      }
+    };
   }, []);
   
   const handleFollow = () => {
-    console.log("Follow button clicked");
-    
     if (!isFollowing) {
       setIsFollowing(true);
       setIsFollowAnimating(true);
       
-      // Play follow sound - with additional logging and error handling
+      // Play sound with optimized playback
       if (followAudioRef.current) {
-        // Reset audio playback position
         followAudioRef.current.currentTime = 0;
-        
-        // Play with error handling and volume adjustment
         const playPromise = followAudioRef.current.play();
         
         if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Follow sound playing successfully");
-              // Make sure volume is at max
-              followAudioRef.current.volume = 1.0;
-            })
-            .catch(err => {
-              console.error("Failed to play follow sound:", err);
-              // Try playing again with user interaction already happened
-              document.addEventListener('click', function tryPlayOnce() {
-                followAudioRef.current.play().catch(e => console.error("Second attempt failed:", e));
-                document.removeEventListener('click', tryPlayOnce);
-              }, { once: true });
-            });
+          playPromise.catch(err => {
+            console.error("Error playing follow sound:", err);
+            // Fallback for browsers requiring user interaction
+            const playOnInteraction = () => {
+              followAudioRef.current.play().catch(e => console.error("Fallback play failed:", e));
+              document.removeEventListener('click', playOnInteraction);
+            };
+            document.addEventListener('click', playOnInteraction, { once: true });
+          });
         }
-    } else {
-        console.error("Follow audio reference is null");
       }
       
       // Reset animation state after animation completes
@@ -1025,16 +1036,6 @@ const StreamPage = () => {
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
       <div className="max-w-7xl mx-auto px-0">
-        {/* Hidden audio element for follow sound */}
-        <audio 
-          ref={followAudioRef} 
-          src="/assets/sound effect.m4a" 
-          preload="auto"
-          style={{ display: 'none' }}
-          onError={(e) => console.error("Error loading audio:", e)}
-          onCanPlayThrough={() => console.log("Audio can play through")}
-        />
-        
         {/* Share Model */}
         <ShareModel 
           open={showShareModel} 
@@ -1614,22 +1615,22 @@ const StreamPage = () => {
                   onClick={handleFollow}
                   type="button"
                 >
-                  {/* Button particles - only visible during animation */}
+                  {/* Enhanced particles animation */}
                   {isFollowAnimating && (
                     <>
-                      {/* Create small particles inside button */}
-                      {Array.from({ length: 12 }).map((_, i) => {
-                        // Create random particle positions and animations
-                        const size = Math.random() * 4 + 2; // 2-6px
-                        const startPos = Math.random() * 100; // 0-100%
-                        const delay = Math.random() * 0.2; // 0-0.2s delay
-                        const duration = Math.random() * 0.5 + 0.3; // 0.3-0.8s
-                        const xDir = Math.random() > 0.5 ? -1 : 1; // Left or right
+                      {/* Particle effects */}
+                      {Array.from({ length: 15 }).map((_, i) => {
+                        const size = Math.random() * 4 + 2;
+                        const startPos = Math.random() * 100;
+                        const delay = Math.random() * 0.2;
+                        const duration = Math.random() * 0.5 + 0.3;
+                        const xDir = Math.random() > 0.5 ? -1 : 1;
+                        const color = `hsl(${280 + Math.random() * 40}, ${70 + Math.random() * 30}%, ${70 + Math.random() * 30}%)`;
                         
                         return (
                           <span 
                             key={i}
-                            className="absolute rounded-full bg-[#EBD3F8]"
+                            className="absolute rounded-full"
                             style={{
                               width: `${size}px`,
                               height: `${size}px`,
@@ -1700,13 +1701,13 @@ const StreamPage = () => {
             <Card className="bg-[#2A2A2D]/50 border-none shadow-xl">
             <Tabs value={activeTab} onChange={(value) => setActiveTab(value)}>
                 <TabsHeader className="bg-transparent border-b border-[#1A1A1D]">
-                  <Tab value="about" className="text-[#EBD3F8]/70 data-[active]:text-[#EBD3F8] data-[active]:border-[#EBD3F8]">
+                <Tab value="about" className="text-[#EBD3F8]/70 hover:text-[#EBD3F8] data-[active]:text-black data-[active]:bg-[#EBD3F8] data-[active]:border-[#EBD3F8]">
                   About
                 </Tab>
-                  <Tab value="schedule" className="text-[#EBD3F8]/70 data-[active]:text-[#EBD3F8] data-[active]:border-[#EBD3F8]">
+                  <Tab value="schedule" className="text-[#EBD3F8]/70 hover:text-[#EBD3F8] data-[active]:text-black data-[active]:bg-[#EBD3F8] data-[active]:border-[#EBD3F8]">
                   Schedule
                 </Tab>
-                  <Tab value="clips" className="text-[#EBD3F8]/70 data-[active]:text-[#EBD3F8] data-[active]:border-[#EBD3F8]">
+                  <Tab value="clips" className="text-[#EBD3F8]/70 hover:text-[#EBD3F8] data-[active]:text-black data-[active]:bg-[#EBD3F8] data-[active]:border-[#EBD3F8]">
                   Clips
                 </Tab>
               </TabsHeader>
