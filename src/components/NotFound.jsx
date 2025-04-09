@@ -7,21 +7,18 @@ const NotFound = () => {
     <div className="bg-[#1A1A1D] min-h-screen flex flex-col items-center justify-center px-4 py-16">
       <div className="max-w-md w-full mx-auto text-center">
         {/* Logo and Pulse Animation */}
-        <div className="mb-8 relative">
-          <div className="w-24 h-24 mx-auto relative">
-            {/* Animated pulse background */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#9D4EDD] to-[#C77DFF] rounded-full opacity-90 animate-pulse-slow"></div>
-            
-            {/* Error code */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-white font-bold text-4xl">404</div>
+        <div className="mb-8 flex justify-center">
+          <div className="relative">
+            {/* Main purple circle with 404 */}
+            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-[#9D4EDD] to-[#C77DFF] flex items-center justify-center animate-pulse-slow">
+              <span className="text-white font-bold text-4xl">404</span>
             </div>
             
-            {/* Pulse waves animation */}
-            <div className="absolute inset-0">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full border border-[#C77DFF]/50 animate-ping" style={{animationDuration: '2s'}}></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-[#C77DFF]/30 animate-ping" style={{animationDuration: '2.5s'}}></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full border border-[#C77DFF]/10 animate-ping" style={{animationDuration: '3s'}}></div>
+            {/* Ripple effects - positioned relative to the parent container */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="rounded-full border border-[#C77DFF]/50 h-32 w-32 absolute animate-ping" style={{animationDuration: '2s'}}></div>
+              <div className="rounded-full border border-[#C77DFF]/30 h-40 w-40 absolute animate-ping" style={{animationDuration: '2.5s'}}></div>
+              <div className="rounded-full border border-[#C77DFF]/10 h-48 w-48 absolute animate-ping" style={{animationDuration: '3s'}}></div>
             </div>
           </div>
         </div>
