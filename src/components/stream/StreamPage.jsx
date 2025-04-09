@@ -596,7 +596,10 @@ const StreamPage = () => {
   // Add state to detect if we're on a mobile device
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
-  // Add effect to detect mobile devices
+  // Add state for screen orientation
+  const [isLandscape, setIsLandscape] = useState(false);
+
+  // Add effect to detect mobile devices and screen orientation
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
@@ -604,12 +607,27 @@ const StreamPage = () => {
         userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i)
       );
       setIsMobileDevice(mobile);
+      
+      // Check orientation
+      if (window.matchMedia) {
+        const isLandscapeOrientation = window.matchMedia("(orientation: landscape)").matches;
+        setIsLandscape(isLandscapeOrientation);
+      } else {
+        // Fallback for browsers without matchMedia
+        setIsLandscape(window.innerWidth > window.innerHeight);
+      }
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    return () => window.removeEventListener('resize', checkMobile);
+    // Add orientation change listener
+    window.addEventListener('orientationchange', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('orientationchange', checkMobile);
+    };
   }, []);
 
   // Modify the fullscreen chat overlay to be responsive
@@ -660,6 +678,10 @@ const StreamPage = () => {
           // Only automatically show chat on desktops, not mobile
           if (isChatOpen && !isMobileDevice) {
             setShowFullscreenChat(true);
+          }
+          // For mobile in landscape, optimize layout
+          if (isMobileDevice && isLandscape) {
+            optimizeLandscapeLayout();
           }
         }).catch(err => {
           console.error("Error entering fullscreen:", err);
@@ -1038,6 +1060,30 @@ const StreamPage = () => {
     }, 1500);
   };
 
+  // Function to optimize video layout for landscape mode
+  const optimizeLandscapeLayout = () => {
+    if (!isMobileDevice || !isLandscape || !isFullscreen) return;
+
+    // If we have access to the video element
+    if (playerRef.current) {
+      const videoElement = playerRef.current.getInternalPlayer();
+      if (videoElement) {
+        // Apply optimal video sizing for landscape
+        videoElement.style.objectFit = "contain";
+        
+        // Show chat in a side panel rather than overlay
+        setShowFullscreenChat(true);
+      }
+    }
+  };
+
+  // Listen for orientation changes while in fullscreen
+  useEffect(() => {
+    if (isFullscreen && isMobileDevice) {
+      optimizeLandscapeLayout();
+    }
+  }, [isLandscape, isFullscreen, isMobileDevice]);
+
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
       <div className="max-w-7xl mx-auto px-0">
@@ -1153,14 +1199,17 @@ const StreamPage = () => {
               />
               
               {isFullscreen && showFullscreenChat && (
-                <div className={`absolute ${isMobileDevice ? 'inset-0' : 'right-4 top-4 bottom-16 w-[350px]'} z-30 transition-all duration-300 bg-black/70 backdrop-blur-sm rounded-lg overflow-hidden flex flex-col shadow-xl border border-[#EBD3F8]/20`}>
+                <div className={`absolute ${isMobileDevice ? (isLandscape ? 'right-0 top-0 bottom-0 w-[35%] max-w-[350px]' : 'inset-0') : 'right-4 top-4 bottom-16 w-[350px]'} z-30 transition-all duration-300 bg-black/70 backdrop-blur-sm rounded-lg overflow-hidden flex flex-col shadow-xl border border-[#EBD3F8]/20`}>
                   {/* Adjust the header to be more mobile-friendly */}
                   <div className="p-2 bg-black/80 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <MessageCircle className="h-4 w-4 text-[#EBD3F8]" />
                       <h3 className="text-sm font-medium text-[#EBD3F8]">Live Chat</h3>
-                      {isMobileDevice && (
+                      {isMobileDevice && !isLandscape && (
                         <span className="ml-2 text-xs text-[#EBD3F8]/50">(Swipe down to minimize)</span>
+                      )}
+                      {isMobileDevice && isLandscape && (
+                        <span className="ml-2 text-xs text-[#EBD3F8]/50">(Rotate for full view)</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
@@ -1328,14 +1377,14 @@ const StreamPage = () => {
               )}
               
               {/* Custom Video Controls */}
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transition-opacity duration-300 ${showControls || isMuted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent ${isMobileDevice && isLandscape && isFullscreen ? 'p-2' : 'p-4'} transition-opacity duration-300 ${showControls || isMuted ? 'opacity-100' : 'opacity-0'}`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <button 
                       onClick={handlePlayPause} 
                       className="text-white hover:text-[#EBD3F8] transition-colors"
                     >
-                      {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
+                      {isPlaying ? <Pause className={`${isMobileDevice && isLandscape && isFullscreen ? 'h-5 w-5' : 'h-6 w-6'}`} /> : <Play className={`${isMobileDevice && isLandscape && isFullscreen ? 'h-5 w-5' : 'h-6 w-6'}`} />}
                     </button>
                     
                     <button 
@@ -1404,7 +1453,7 @@ const StreamPage = () => {
                     touchAction: isMobileDevice ? 'none' : 'auto'
                   }}
                 >
-                  <div className="flex flex-col min-h-[40vh] max-h-[62vh] border-t-4 border-[#EBD3F8]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
+                  <div className="flex flex-col min-h-[40vh] max-h-[60vh] border-t-2 border-[#EBD3F8]"> {/* Decreased from min-h-[45vh] max-h-[65vh] */}
                     {/* Chat Header with Close Button */}
                     <div className="p-3 border-b border-[#1A1A1D] sticky top-0 bg-[#2A2A2D]/50 backdrop-blur-sm z-[5]">
                       <div className="flex items-center justify-between mb-2">
