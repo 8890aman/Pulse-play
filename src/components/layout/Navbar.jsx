@@ -85,7 +85,7 @@ const Navbar = ({ onOpenLogin, onOpenSignup }) => {
 
   return (
     <>
-      <nav className={`${isScrolled ? 'bg-[#1A1A1D]/90 backdrop-blur-md shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300`}>
+      <nav className={`${isScrolled ? 'bg-[#1A1A1D] shadow-lg' : 'bg-gradient-to-r from-[#1A1A1D] via-[#1F1F23] to-[#1A1A1D]'} fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300`}>
         <div className="h-16 flex items-center justify-between max-w-[2000px] mx-auto px-4 md:px-6">
           {/* Left section - Logo */}
           <div className="flex items-center">
