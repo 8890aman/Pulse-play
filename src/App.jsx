@@ -10,6 +10,7 @@ import Trending from './components/Trending'
 import Events from './components/Events'
 import LoginModal from './components/auth/LoginModal'
 import SignupModal from './components/auth/SignupModal'
+import NotFound from './components/NotFound'
 
 function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -42,6 +43,7 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/following" element={<Following />} />
             <Route path="/category/:id" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </main>
