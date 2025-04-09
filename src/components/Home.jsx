@@ -164,13 +164,13 @@ const LiveChip = ({ viewers }) => {
   }, []);
 
   return (
-    <div className="flex items-center gap-1 sm:gap-3 flex-wrap">
-      <div className="bg-red-600 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2 shadow-lg hover:bg-red-500 transition-colors group">
+    <div className="flex items-center gap-0.5 sm:gap-3 flex-wrap">
+      <div className="bg-red-600 backdrop-blur-sm px-1.5 sm:px-3 py-0.5 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium flex items-center gap-1 sm:gap-2 shadow-lg hover:bg-red-500 transition-colors group">
         <span className={`inline-block w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full ${isBlinking ? 'bg-white animate-pulse' : 'bg-white/80'}`}></span>
         <span className="text-white font-semibold">LIVE</span>
       </div>
-      <div className="bg-black/50 backdrop-blur px-2 sm:px-3 py-1 sm:py-1.5 rounded-md">
-        <span className="text-white font-semibold text-xs sm:text-sm">
+      <div className="bg-black/70 backdrop-blur px-1.5 sm:px-3 py-0.5 sm:py-1.5 rounded-md">
+        <span className="text-white font-semibold text-xs sm:text-sm whitespace-nowrap">
           <AnimatedViewerCount count={viewers} /> viewers
         </span>
       </div>
@@ -308,16 +308,16 @@ const Home = () => {
 
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
-      {/* Featured Stream - Adjusted padding and position */}
-      <div className="max-w-7xl mx-auto px-0 sm:px-4">
-        <div className="relative h-[400px] sm:h-[300px] md:h-[400px] overflow-hidden rounded-none sm:rounded-2xl shadow-2xl bg-[#2A2A2D]">
+      {/* Featured Stream - Use consistent styling for all screen sizes */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-4">
+        <div className="relative h-[400px] overflow-hidden rounded-xl shadow-2xl bg-[#2A2A2D]">
           {/* Video Background */}
           <div className="absolute inset-0 w-full h-full">
             {/* Local Video with key for refreshing */}
             <video
               key={videoKey}
               ref={videoRef}
-              className="absolute w-full h-full object-cover z-10 sm:rounded-2xl"
+              className="absolute w-full h-full object-cover z-10 rounded-xl"
               src="/assets/valo.mp4"
               autoPlay
               loop
@@ -331,14 +331,14 @@ const Home = () => {
               style={{ opacity: videoLoaded ? 1 : 0 }}
             />
             {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 pointer-events-none z-20 sm:rounded-2xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 pointer-events-none z-20 rounded-xl"></div>
           </div>
 
           {/* Content */}
           <div className="absolute inset-0 flex items-end pointer-events-auto z-30">
             <div className="w-full px-4 sm:px-6 pb-4 sm:pb-6">
-              <div className="flex items-center flex-wrap">
-                <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 mb-3 sm:mb-0">
                   <div className="absolute top-2 left-2 flex items-center gap-2 bg-black/70 text-white px-3 py-1 rounded-full text-xs">
                     <div className="w-6 h-6 rounded-full bg-[#EBD3F8] flex items-center justify-center text-[#1A1A1D] font-bold">
                       {featuredStreamer.streamer.charAt(0)}
@@ -349,10 +349,10 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-start gap-2 items-center">
+                <div className="flex flex-row sm:flex-row items-center gap-2">
                   <LiveChip viewers={featuredStreamer.viewers} />
-                  <Link to={`/stream/${featuredStreamer.id}`} className="inline-flex items-center px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg bg-white hover:bg-white/90 text-[#1A1A1D] font-medium transition-all duration-300 gap-2">
-                    <Play className="w-5 h-5" />
+                  <Link to={`/stream/${featuredStreamer.id}`} className="inline-flex items-center px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg bg-white hover:bg-white/90 text-[#1A1A1D] font-medium transition-all duration-300 gap-1.5 sm:gap-2">
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                     <span>Watch Now</span>
                   </Link>
                 </div>
@@ -380,12 +380,12 @@ const Home = () => {
                     alt={channel.title}
                     className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute bottom-2 left-2 scale-90 sm:scale-100 origin-bottom-left">
+                  <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-bottom-left">
                     <LiveChip viewers={channel.viewers} />
                   </div>
                 </div>
                 
-                {/* Stream Info */}
+                {/* Stream Info - improved mobile layout */}
                 <div className="mt-2 sm:mt-3">
                   <div className="flex">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
@@ -395,8 +395,12 @@ const Home = () => {
                       <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium truncate group-hover:text-[#EBD3F8]/80 transition-colors">
                         {channel.title}
                       </h3>
-                      <p className="text-[#EBD3F8]/80 text-xs sm:text-sm">{channel.streamer}</p>
-                      <p className="text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
+                      <div className="flex items-center">
+                        <p className="text-[#EBD3F8]/80 text-xs sm:text-sm mr-1">{channel.streamer}</p>
+                        <span className="hidden xs:inline-block text-[#EBD3F8]/60 text-xs">•</span>
+                        <p className="hidden xs:block text-[#EBD3F8]/60 text-xs sm:text-sm ml-1">{channel.game}</p>
+                      </div>
+                      <p className="block xs:hidden text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
                       <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
                         {channel.tags.map((tag, index) => (
                           <span 
@@ -516,14 +520,14 @@ const Home = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {/* Live Badge & Duration */}
-                    <div className="absolute top-2 left-2 scale-90 sm:scale-100 origin-top-left">
+                    <div className="absolute top-1 sm:top-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-top-left">
                       <LiveChip viewers={channel.viewers} />
                     </div>
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
                   </div>
 
-                  {/* Stream Info */}
+                  {/* Stream Info - improved mobile layout */}
                   <div className="p-2 sm:p-4 bg-[#2A2A2D]">
                     <div className="flex">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
@@ -533,8 +537,12 @@ const Home = () => {
                         <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium line-clamp-1 group-hover:text-[#EBD3F8]/80 transition-colors">
                           {channel.title}
                         </h3>
-                        <p className="text-[#EBD3F8]/80 text-xs sm:text-sm">{channel.streamer}</p>
-                        <p className="text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
+                        <div className="flex items-center">
+                          <p className="text-[#EBD3F8]/80 text-xs sm:text-sm mr-1">{channel.streamer}</p>
+                          <span className="hidden xs:inline-block text-[#EBD3F8]/60 text-xs">•</span>
+                          <p className="hidden xs:block text-[#EBD3F8]/60 text-xs sm:text-sm ml-1">{channel.game}</p>
+                        </div>
+                        <p className="block xs:hidden text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
                         <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2 flex-wrap">
                           {channel.tags.map((tag, index) => (
                             <span 
