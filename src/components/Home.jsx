@@ -309,232 +309,89 @@ const Home = () => {
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
       {/* Featured Stream - Use consistent styling for all screen sizes */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-4">
-        <div className="relative h-[400px] overflow-hidden rounded-xl shadow-2xl bg-[#2A2A2D]">
-          {/* Video Background */}
-          <div className="absolute inset-0 w-full h-full">
-            {/* Local Video with key for refreshing */}
-            <video
-              key={videoKey}
-              ref={videoRef}
-              className="absolute w-full h-full object-cover z-10 rounded-xl"
-              src="/assets/valo.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              onLoadedData={() => {
-                console.log("Video loaded event fired");
-                setVideoLoaded(true);
-                playVideo();
-              }}
-              style={{ opacity: videoLoaded ? 1 : 0 }}
-            />
-            {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 pointer-events-none z-20 rounded-xl"></div>
-          </div>
+      <div className="relative h-[400px] overflow-hidden rounded-xl shadow-2xl bg-[#2A2A2D]">
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Local Video with key for refreshing */}
+          <video
+            key={videoKey}
+            ref={videoRef}
+            className="absolute w-full h-full object-cover z-10 rounded-xl"
+            src="/assets/valo.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            onLoadedData={() => {
+              console.log("Video loaded event fired");
+              setVideoLoaded(true);
+              playVideo();
+            }}
+            style={{ opacity: videoLoaded ? 1 : 0 }}
+          />
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 pointer-events-none z-20 rounded-xl"></div>
+        </div>
 
-          {/* Content */}
-          <div className="absolute inset-0 flex items-end pointer-events-auto z-30">
-            <div className="w-full px-4 sm:px-6 pb-4 sm:pb-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center">
-                <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 mb-3 sm:mb-0">
-                  <div className="absolute top-2 left-2 flex items-center gap-2 bg-black/70 text-white px-3 py-1 rounded-full text-xs">
-                    <div className="w-6 h-6 rounded-full bg-[#EBD3F8] flex items-center justify-center text-[#1A1A1D] font-bold">
-                      {featuredStreamer.streamer.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-medium">{featuredStreamer.streamer}</p>
-                      <p className="text-white/70">{featuredStreamer.game}</p>
-                    </div>
+        {/* Content */}
+        <div className="absolute inset-0 flex items-end pointer-events-auto z-30">
+          <div className="w-full px-4 sm:px-6 pb-4 sm:pb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center">
+              <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 mb-3 sm:mb-0">
+                <div className="absolute top-2 left-2 flex items-center gap-2 bg-black/70 text-white px-3 py-1 rounded-full text-xs">
+                  <div className="w-6 h-6 rounded-full bg-[#EBD3F8] flex items-center justify-center text-[#1A1A1D] font-bold">
+                    {featuredStreamer.streamer.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium">{featuredStreamer.streamer}</p>
+                    <p className="text-white/70">{featuredStreamer.game}</p>
                   </div>
                 </div>
-                <div className="flex flex-row sm:flex-row items-center gap-2">
-                  <LiveChip viewers={featuredStreamer.viewers} />
-                  <Link to={`/stream/${featuredStreamer.id}`} className="inline-flex items-center px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg bg-white hover:bg-white/90 text-[#1A1A1D] font-medium transition-all duration-300 gap-1.5 sm:gap-2">
-                    <Play className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span>Watch Now</span>
-                  </Link>
-                </div>
+              </div>
+              <div className="flex flex-row sm:flex-row items-center gap-2">
+                <LiveChip viewers={featuredStreamer.viewers} />
+                <Link to={`/stream/${featuredStreamer.id}`} className="inline-flex items-center px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-lg bg-white hover:bg-white/90 text-[#1A1A1D] font-medium transition-all duration-300 gap-1.5 sm:gap-2">
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>Watch Now</span>
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Content Tabs - Added slight adjustment to top padding */}
-      <div className="max-w-7xl mx-auto px-4 pt-8 pb-6">
-        {/* Live Channels Section */}
-        <div>
-          <h2 className="text-[#EBD3F8] text-xl font-semibold mb-4 flex items-center">
-            <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
-            Live channels we think you'll like
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-            {channels.map((channel) => (
-              <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
-                {/* Thumbnail */}
-                <div className="relative rounded-lg overflow-hidden shadow-lg group-hover:shadow-[#EBD3F8]/20 transition-all duration-300">
-                  <img
-                    src={channel.thumbnail}
-                    alt={channel.title}
-                    className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-bottom-left">
-                    <LiveChip viewers={channel.viewers} />
-                  </div>
-                </div>
-                
-                {/* Stream Info - improved mobile layout */}
-                <div className="mt-2 sm:mt-3">
-                  <div className="flex">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
-                      {channel.streamer.charAt(0)}
-                    </div>
-                    <div className="ml-2 overflow-hidden">
-                      <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium truncate group-hover:text-[#EBD3F8]/80 transition-colors">
-                        {channel.title}
-                      </h3>
-                      <div className="flex items-center">
-                        <p className="text-[#EBD3F8]/80 text-xs sm:text-sm mr-1">{channel.streamer}</p>
-                        <span className="hidden xs:inline-block text-[#EBD3F8]/60 text-xs">•</span>
-                        <p className="hidden xs:block text-[#EBD3F8]/60 text-xs sm:text-sm ml-1">{channel.game}</p>
-                      </div>
-                      <p className="block xs:hidden text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
-                      <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
-                        {channel.tags.map((tag, index) => (
-                          <span 
-                            key={index}
-                            className="px-1.5 sm:px-2 py-0.5 bg-[#2A2A2D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-        
-        {/* Categories Section */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-[#EBD3F8] text-xl font-semibold flex items-center">
-              <Folder className="h-5 w-5 mr-2 text-[#EBD3F8]" />
-              Popular Categories
+      {/* Main Content */}
+      <div className="p-4 md:p-8 xl:p-12">
+        <div className="max-w-7xl mx-auto xl:max-w-8xl">
+          {/* Live Channels Section */}
+          <div>
+            <h2 className="text-[#EBD3F8] text-xl font-semibold mb-4 flex items-center">
+              <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
+              Live channels we think you'll like
             </h2>
-            <Link 
-              to="/browse" 
-              className="flex items-center px-4 py-2 rounded-lg bg-[#2A2A2D] hover:bg-[#2A2A2D]/80 text-[#EBD3F8] transition-all duration-300 group"
-            >
-              <span className="text-sm font-medium mr-2">View All</span>
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform duration-300" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {[
-              { 
-                name: 'VALORANT',
-                banner: 'https://imgs.search.brave.com/8-w--1UhNtnEM2CW2f2zcxQejwExb6lTJf_4r8_hhN8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvdmFsb3JhbnQt/MzA1a2VzY3h3NWRw/dXA3eS5qcGc',
-                viewers: '125K'
-              },
-              { 
-                name: 'Counter-Strike',
-                banner: 'https://cdn.akamai.steamstatic.com/apps/csgo/images/csgo_react/social/cs2.jpg',
-                viewers: '98K'
-              },
-              { 
-                name: 'League of Legends',
-                banner: 'https://cdn1.epicgames.com/offer/24b9b5e323bc40eea252a10cdd3b2f10/EGS_LeagueofLegends_RiotGames_S1_2560x1440-872a966297484acd0efe49f34edd5aed',
-                viewers: '75K'
-              },
-              { 
-                name: 'Fortnite',
-                banner: 'https://cdn2.unrealengine.com/social-image-chapter4-s3-3840x2160-d35912cc25ad.jpg',
-                viewers: '62K'
-              },
-              { 
-                name: 'Minecraft',
-                banner: 'https://imgs.search.brave.com/8Oxf6gaPVgYJzRYTgCV_JNcTye45UX1dDGZBF_Rxa7Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bWluZWNyYWZ0Lm5l/dC9jb250ZW50L2Rh/bS9taW5lY3JhZnRu/ZXQvZ2FtZXMvZHVu/Z2VvbnMva2V5LWFy/dC9Ib21lcGFnZV9D/b2xsZWN0YWJsZXMt/Q2Fyb3VzZWwtSC0w/X01DRF80MTR4NDE0/XzAxLmpwZw',
-                viewers: '28K'
-              }
-            ].map((category, index) => (
-              <Link to={`/category/${index + 1}`} key={index} className="group relative overflow-hidden rounded-xl">
-                <div className="aspect-[16/9] relative overflow-hidden rounded-xl">
-                  {/* Banner Image */}
-                  <img 
-                    src={category.banner}
-                    alt={category.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                  />
-                  
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300" />
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
-                    <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-[#EBD3F8] transition-colors duration-300">
-                      {category.name}
-                    </h3>
-                    <div className="flex items-center space-x-2">
-                      <div className="flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
-                        <Eye className="w-3.5 h-3.5 text-[#EBD3F8] mr-1.5" />
-                        <span className="text-[#EBD3F8] text-sm font-medium">
-                          {category.viewers}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Infinite Scroll Section */}
-        <div className="mt-12">
-          <h2 className="text-[#EBD3F8] text-xl font-semibold mb-6 flex items-center">
-            <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
-            Discover More Streams
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-            {channels.map((channel) => (
-              <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
-                <div className="relative rounded-xl overflow-hidden shadow-lg group-hover:shadow-[#EBD3F8]/20 transition-all duration-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+              {channels.map((channel) => (
+                <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
                   {/* Thumbnail */}
-                  <div className="aspect-video relative">
+                  <div className="relative rounded-lg overflow-hidden shadow-lg group-hover:shadow-[#EBD3F8]/20 transition-all duration-300">
                     <img
                       src={channel.thumbnail}
                       alt={channel.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full aspect-video object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    {/* Live Badge & Duration */}
-                    <div className="absolute top-1 sm:top-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-top-left">
+                    <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-bottom-left">
                       <LiveChip viewers={channel.viewers} />
                     </div>
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
                   </div>
-
+                  
                   {/* Stream Info - improved mobile layout */}
-                  <div className="p-2 sm:p-4 bg-[#2A2A2D]">
+                  <div className="mt-2 sm:mt-3">
                     <div className="flex">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
                         {channel.streamer.charAt(0)}
                       </div>
-                      <div className="ml-2 sm:ml-3">
-                        <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium line-clamp-1 group-hover:text-[#EBD3F8]/80 transition-colors">
+                      <div className="ml-2 overflow-hidden">
+                        <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium truncate group-hover:text-[#EBD3F8]/80 transition-colors">
                           {channel.title}
                         </h3>
                         <div className="flex items-center">
@@ -543,11 +400,11 @@ const Home = () => {
                           <p className="hidden xs:block text-[#EBD3F8]/60 text-xs sm:text-sm ml-1">{channel.game}</p>
                         </div>
                         <p className="block xs:hidden text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
-                        <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2 flex-wrap">
+                        <div className="flex gap-1 sm:gap-2 mt-1 flex-wrap">
                           {channel.tags.map((tag, index) => (
                             <span 
                               key={index}
-                              className="px-1.5 sm:px-2 py-0.5 bg-[#1A1A1D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
+                              className="px-1.5 sm:px-2 py-0.5 bg-[#2A2A2D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
                             >
                               {tag}
                             </span>
@@ -556,25 +413,168 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          {/* Categories Section */}
+          <div className="mt-10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-[#EBD3F8] text-xl font-semibold flex items-center">
+                <Folder className="h-5 w-5 mr-2 text-[#EBD3F8]" />
+                Popular Categories
+              </h2>
+              <Link 
+                to="/browse" 
+                className="flex items-center px-4 py-2 rounded-lg bg-[#2A2A2D] hover:bg-[#2A2A2D]/80 text-[#EBD3F8] transition-all duration-300 group"
+              >
+                <span className="text-sm font-medium mr-2">View All</span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-4 w-4 transform group-hover:translate-x-0.5 transition-transform duration-300" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
-            ))}
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {[
+                { 
+                  name: 'VALORANT',
+                  banner: 'https://imgs.search.brave.com/8-w--1UhNtnEM2CW2f2zcxQejwExb6lTJf_4r8_hhN8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvZmVhdHVy/ZWQvdmFsb3JhbnQt/MzA1a2VzY3h3NWRw/dXA3eS5qcGc',
+                  viewers: '125K'
+                },
+                { 
+                  name: 'Counter-Strike',
+                  banner: 'https://cdn.akamai.steamstatic.com/apps/csgo/images/csgo_react/social/cs2.jpg',
+                  viewers: '98K'
+                },
+                { 
+                  name: 'League of Legends',
+                  banner: 'https://cdn1.epicgames.com/offer/24b9b5e323bc40eea252a10cdd3b2f10/EGS_LeagueofLegends_RiotGames_S1_2560x1440-872a966297484acd0efe49f34edd5aed',
+                  viewers: '75K'
+                },
+                { 
+                  name: 'Fortnite',
+                  banner: 'https://cdn2.unrealengine.com/social-image-chapter4-s3-3840x2160-d35912cc25ad.jpg',
+                  viewers: '62K'
+                },
+                { 
+                  name: 'Minecraft',
+                  banner: 'https://imgs.search.brave.com/8Oxf6gaPVgYJzRYTgCV_JNcTye45UX1dDGZBF_Rxa7Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bWluZWNyYWZ0Lm5l/dC9jb250ZW50L2Rh/bS9taW5lY3JhZnRu/ZXQvZ2FtZXMvZHVu/Z2VvbnMva2V5LWFy/dC9Ib21lcGFnZV9D/b2xsZWN0YWJsZXMt/Q2Fyb3VzZWwtSC0w/X01DRF80MTR4NDE0/XzAxLmpwZw',
+                  viewers: '28K'
+                }
+              ].map((category, index) => (
+                <Link to={`/category/${index + 1}`} key={index} className="group relative overflow-hidden rounded-xl">
+                  <div className="aspect-[16/9] relative overflow-hidden rounded-xl">
+                    {/* Banner Image */}
+                    <img 
+                      src={category.banner}
+                      alt={category.name}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300" />
+                    
+                    {/* Content */}
+                    <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                      <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-[#EBD3F8] transition-colors duration-300">
+                        {category.name}
+                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <div className="flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
+                          <Eye className="w-3.5 h-3.5 text-[#EBD3F8] mr-1.5" />
+                          <span className="text-[#EBD3F8] text-sm font-medium">
+                            {category.viewers}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Loading Indicator */}
-          <div 
-            ref={loaderRef} 
-            className="flex justify-center items-center py-8"
-          >
-            {loading ? (
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce [animation-delay:-0.3s]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce [animation-delay:-0.15s]"></div>
-                <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce"></div>
-              </div>
-            ) : (
-              <div className="h-8" /> // Spacer for intersection observer
-            )}
+          {/* Infinite Scroll Section */}
+          <div className="mt-12">
+            <h2 className="text-[#EBD3F8] text-xl font-semibold mb-6 flex items-center">
+              <Play className="h-5 w-5 mr-2 text-[#EBD3F8]" />
+              Discover More Streams
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+              {channels.map((channel) => (
+                <Link to={`/stream/${channel.id}`} key={channel.id} className="group">
+                  <div className="relative rounded-xl overflow-hidden shadow-lg group-hover:shadow-[#EBD3F8]/20 transition-all duration-300">
+                    {/* Thumbnail */}
+                    <div className="aspect-video relative">
+                      <img
+                        src={channel.thumbnail}
+                        alt={channel.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {/* Live Badge & Duration */}
+                      <div className="absolute top-1 sm:top-2 left-1 sm:left-2 scale-90 sm:scale-100 origin-top-left">
+                        <LiveChip viewers={channel.viewers} />
+                      </div>
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                    </div>
+
+                    {/* Stream Info - improved mobile layout */}
+                    <div className="p-2 sm:p-4 bg-[#2A2A2D]">
+                      <div className="flex">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#EBD3F8] flex-shrink-0 flex items-center justify-center text-[#1A1A1D] font-bold">
+                          {channel.streamer.charAt(0)}
+                        </div>
+                        <div className="ml-2 sm:ml-3">
+                          <h3 className="text-[#EBD3F8] text-sm sm:text-base font-medium line-clamp-1 group-hover:text-[#EBD3F8]/80 transition-colors">
+                            {channel.title}
+                          </h3>
+                          <div className="flex items-center">
+                            <p className="text-[#EBD3F8]/80 text-xs sm:text-sm mr-1">{channel.streamer}</p>
+                            <span className="hidden xs:inline-block text-[#EBD3F8]/60 text-xs">•</span>
+                            <p className="hidden xs:block text-[#EBD3F8]/60 text-xs sm:text-sm ml-1">{channel.game}</p>
+                          </div>
+                          <p className="block xs:hidden text-[#EBD3F8]/60 text-xs sm:text-sm">{channel.game}</p>
+                          <div className="flex gap-1 sm:gap-2 mt-1 sm:mt-2 flex-wrap">
+                            {channel.tags.map((tag, index) => (
+                              <span 
+                                key={index}
+                                className="px-1.5 sm:px-2 py-0.5 bg-[#1A1A1D] text-[#EBD3F8]/80 text-xs rounded-full hidden sm:inline-block sm:first:inline-block sm:nth-child(2):inline-block"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* Loading Indicator */}
+            <div 
+              ref={loaderRef} 
+              className="flex justify-center items-center py-8"
+            >
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-2 h-2 rounded-full bg-[#EBD3F8] animate-bounce"></div>
+                </div>
+              ) : (
+                <div className="h-8" /> // Spacer for intersection observer
+              )}
+            </div>
           </div>
         </div>
       </div>

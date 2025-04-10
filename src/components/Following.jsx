@@ -81,8 +81,8 @@ const Following = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-4 md:p-8 xl:p-12">
+      <div className="max-w-7xl mx-auto xl:max-w-8xl">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Following</h1>

@@ -22,3 +22,41 @@ nav {
 nav > * {
   z-index: inherit;
 }
+
+/* Responsive scaling for extra large screens */
+@media (min-width: 1920px) {
+  html {
+    font-size: 18px; /* Slightly larger base font size */
+  }
+  
+  .xl:max-w-8xl {
+    max-width: 1920px; /* Custom max width for extra large screens */
+  }
+  
+  /* Ensure grid columns maintain good proportions */
+  .grid-cols-1,
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    gap: 1.5rem;
+  }
+}
+
+/* Ultra-wide screen adjustments */
+@media (min-width: 2560px) {
+  html {
+    font-size: 20px; /* Even larger base font size for ultra-wide */
+  }
+  
+  .xl:max-w-8xl {
+    max-width: 2200px; /* Expanded max width */
+  }
+  
+  /* Enhance content area width */
+  .container, 
+  .max-w-7xl {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

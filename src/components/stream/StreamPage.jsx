@@ -1086,27 +1086,27 @@ const StreamPage = () => {
 
   return (
     <div className="bg-[#1A1A1D] min-h-screen">
-      <div className="max-w-7xl mx-auto px-0">
-        {/* Share Model */}
-        <ShareModel 
-          open={showShareModel} 
-          onClose={handleCloseShare} 
-          streamData={streamData}
-        />
-        
-        {/* Donation Modal */}
-        <DonationModal 
-          isOpen={showDonationModal} 
-          onClose={handleCloseDonation} 
-          streamerName={streamData.streamer}
-          onDonate={handleDonation}
-        />
-        
-        <div className="grid grid-cols-12 gap-0 md:gap-4 pt-0 mt-0">
-
-          {/* Main Content */}
-          <div className={`${isChatOpen ? 'col-span-12 xl:col-span-9' : 'col-span-12'} pt-0 mt-0`}>
-            {/* Video Player */}
+      {/* Share Model */}
+      <ShareModel 
+        open={showShareModel} 
+        onClose={handleCloseShare} 
+        streamData={streamData}
+      />
+      
+      {/* Donation Modal */}
+      <DonationModal 
+        isOpen={showDonationModal} 
+        onClose={handleCloseDonation} 
+        streamerName={streamData.streamer}
+        onDonate={handleDonation}
+      />
+      
+      {/* Main Stream Container */}
+      <div className="max-w-[2000px] mx-auto p-4 md:p-6 xl:p-12">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Stream and Info Section */}
+          <div className="w-full lg:w-[calc(100%-350px)] xl:w-[calc(100%-400px)] 2xl:w-[calc(100%-450px)]">
+            {/* Player */}
             <div 
               ref={videoContainerRef} 
               className="relative aspect-video w-full bg-[#2A2A2D] rounded-none md:rounded-lg shadow-lg overflow-hidden group" 
