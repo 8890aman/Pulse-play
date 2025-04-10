@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { TrendingUp, Eye, Users, Clock } from 'lucide-react';
 
 const Trending = () => {
+  // Animation state
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animations after component mounts
+    setIsLoaded(true);
+    
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   const trendingStreams = [
     {
       id: 1,
@@ -72,10 +83,10 @@ const Trending = () => {
   ];
 
   return (
-    <div className="bg-[#1A1A1D] min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-[#1A1A1D] min-h-screen p-4 md:p-8 xl:p-12">
+      <div className="max-w-7xl mx-auto xl:max-w-8xl">
         {/* Header */}
-        <div className="mb-12">
+        <div className={`mb-12 transition-all duration-500 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <h1 className="text-[#EBD3F8] text-3xl font-bold mb-2 flex items-center">
             <TrendingUp className="w-8 h-8 mr-3" />
             Trending Now
@@ -86,16 +97,18 @@ const Trending = () => {
         </div>
 
         {/* Trending Streams */}
-        <div className="mb-12">
+        <div className={`mb-12 transition-all duration-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+             style={{ transitionDelay: '100ms' }}>
           <h2 className="text-[#EBD3F8] text-2xl font-semibold mb-6">
             Top Trending Streams
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {trendingStreams.map((stream) => (
+            {trendingStreams.map((stream, index) => (
               <Link
                 key={stream.id}
                 to={`/stream/${stream.id}`}
-                className="group relative bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300"
+                className={`group relative bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                style={{ transitionDelay: `${200 + (index * 100)}ms` }}
               >
                 {/* Thumbnail */}
                 <div className="aspect-video relative overflow-hidden">
@@ -146,16 +159,18 @@ const Trending = () => {
         </div>
 
         {/* Trending Categories */}
-        <div>
+        <div className={`transition-all duration-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+             style={{ transitionDelay: '500ms' }}>
           <h2 className="text-[#EBD3F8] text-2xl font-semibold mb-6">
             Trending Categories
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {trendingCategories.map((category) => (
+            {trendingCategories.map((category, index) => (
               <Link
                 key={category.id}
                 to={`/category/${category.id}`}
-                className="group relative bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300"
+                className={`group relative bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                style={{ transitionDelay: `${600 + (index * 100)}ms` }}
               >
                 {/* Image */}
                 <div className="aspect-[16/9] relative overflow-hidden">

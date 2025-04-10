@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Users, Trophy, Eye, X, ChevronLeft, ChevronRight, ExternalLink, Share2 } from 'lucide-react';
 
 const Events = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
   const [selectedEvent, setSelectedEvent] = useState(null);
+  
+  // Animation state
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animations after component mounts
+    setIsLoaded(true);
+    
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   const events = {
     upcoming: [
@@ -105,10 +116,10 @@ const Events = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-4 sm:p-6 md:p-8 custom-scrollbar">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-gradient-to-b from-[#1A1A1D] to-[#1F1F23] min-h-screen p-4 sm:p-6 md:p-8 xl:p-12 custom-scrollbar">
+      <div className="max-w-7xl mx-auto xl:max-w-8xl">
         {/* Header */}
-        <div className="mb-8 md:mb-12">
+        <div className={`mb-8 md:mb-12 transition-all duration-500 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <h1 className="text-white text-2xl md:text-3xl font-bold mb-2 flex items-center">
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-[#9D4EDD] to-[#C77DFF] flex items-center justify-center shadow-lg shadow-[#9D4EDD]/10 mr-3">
               <Calendar className="w-4 h-4 md:w-5 md:h-5 text-white" />
@@ -121,7 +132,8 @@ const Events = () => {
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-[#2A2A2D] mb-6 md:mb-8 overflow-x-auto no-scrollbar">
+        <div className={`flex border-b border-[#2A2A2D] mb-6 md:mb-8 overflow-x-auto no-scrollbar transition-all duration-600 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+             style={{ transitionDelay: '100ms' }}>
           {['upcoming', 'ongoing', 'completed'].map((tab) => (
             <button
               key={tab}
@@ -138,12 +150,14 @@ const Events = () => {
         </div>
 
         {/* Events Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          {events[activeTab].map((event) => (
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 transition-all duration-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+             style={{ transitionDelay: '200ms' }}>
+          {events[activeTab].map((event, index) => (
             <div
               key={event.id}
               onClick={() => handleEventClick(event)}
-              className="group bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300 cursor-pointer shadow-md hover:shadow-xl"
+              className={`group bg-[#2A2A2D] rounded-xl overflow-hidden hover:transform hover:scale-[1.02] transition-all duration-300 cursor-pointer shadow-md hover:shadow-xl transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+              style={{ transitionDelay: `${300 + (index * 100)}ms` }}
             >
               {/* Event Image */}
               <div className="aspect-[2/1] relative overflow-hidden">

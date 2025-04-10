@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Eye, Gamepad2, MessageCircle, Palette, Music2, Code2 } from 'lucide-react';
 
@@ -105,6 +105,17 @@ const Browse = () => {
     }
   ]);
 
+  // Animation state
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animations after component mounts
+    setIsLoaded(true);
+    
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
   const filteredCategories = categories.map(section => ({
     ...section,
     categories: section.categories.filter(category =>
@@ -117,10 +128,10 @@ const Browse = () => {
   console.log('Filtered categories count:', filteredCategories.length);
 
   return (
-    <div className="bg-[#1A1A1D] min-h-screen p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-[#1A1A1D] min-h-screen p-4 md:p-8 xl:p-12">
+      <div className="max-w-7xl mx-auto xl:max-w-8xl">
         {/* Search Bar */}
-        <div className="mb-8">
+        <div className={`mb-8 transition-all duration-500 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className="relative">
             <input
               type="text"
@@ -154,53 +165,58 @@ const Browse = () => {
         )}
 
         {/* Categories */}
-        {filteredCategories.map((section) => (
-          <div key={section.id} className="mb-12">
+        {filteredCategories.map((section, sectionIndex) => (
+          <div 
+            key={section.id} 
+            className={`mb-12 transition-all duration-700 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+            style={{ transitionDelay: `${200 + (sectionIndex * 100)}ms` }}
+          >
             <h2 className="text-[#EBD3F8] text-2xl font-semibold mb-6 flex items-center">
               {section.icon}
               <span className="ml-3">{section.name}</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {section.categories.map((category) => (
-            <Link
+              {section.categories.map((category, index) => (
+                <Link
                   key={category.id}
-              to={`/category/${category.id}`}
-                  className="group relative overflow-hidden rounded-xl"
-            >
+                  to={`/category/${category.id}`}
+                  className={`group relative overflow-hidden rounded-xl transform transition-all duration-500 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                  style={{ transitionDelay: `${300 + (sectionIndex * 100) + (index * 50)}ms` }}
+                >
                   <div className="aspect-[16/9] relative overflow-hidden rounded-xl">
-                <img
+                    <img
                       src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                />
+                      alt={category.name}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-300" />
                     <div className="absolute inset-0 p-4 flex flex-col justify-end">
                       <h3 className="text-white font-semibold text-lg mb-1 group-hover:text-[#EBD3F8] transition-colors duration-300">
-                    {category.name}
-                  </h3>
+                        {category.name}
+                      </h3>
                       <div className="flex items-center space-x-2 mb-2">
                         <div className="flex items-center bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full">
                           <Eye className="w-3.5 h-3.5 text-[#EBD3F8] mr-1.5" />
-                    <span className="text-[#EBD3F8] text-sm font-medium">
+                          <span className="text-[#EBD3F8] text-sm font-medium">
                             {(category.viewers / 1000).toFixed(1)}K viewers
-                    </span>
-                  </div>
-                </div>
+                          </span>
+                        </div>
+                      </div>
                       <div className="flex flex-wrap gap-2">
-                  {category.tags.map((tag, index) => (
-                    <span
-                      key={index}
+                        {category.tags.map((tag, index) => (
+                          <span
+                            key={index}
                             className="px-2 py-0.5 bg-[#EBD3F8]/10 text-[#EBD3F8] text-xs rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+                </Link>
+              ))}
+            </div>
           </div>
         ))}
       </div>
